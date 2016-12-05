@@ -1,0 +1,27 @@
+{
+  "name": "i3-status",
+  "version": "0.0.1",
+  "description": "A highly customizable i3wm status bar",
+  "main": "lib/index.js",
+  "url": "https://github.com/fehmer/i3-status/issues",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fehmer/i3-status.git"
+  },
+  "keywords": [
+    "i3",
+    "i3wn",
+    "i3status",
+    "i3blocks"
+  ],
+  "author": "Christian Fehmer",
+  "license": "MIT",
+  "dependencies": {
+
+  },
+  "devDependencies": {
+
+  }
+}
