@@ -1,0 +1,12 @@
+dist: trusty
+language: node_js
+node_js:
+  - stable
+install:
+  - npm install
+
+script:
+  - npm run cover
+
+# Send coverage data to Coveralls
+after_script: "cat coverage/lcov.info | ./node_modules/.bin/codacy-coverage && rm -rf ./coverage"

@@ -1,0 +1,12 @@
+main:
+  color: '#E0E0E0'
+  interval: 5
+blocks:
+  - name: module
+    module: nonexisting
+  - name: module2
+    module: replace
+    text: module working
+  - name: module3
+    module: i3-status-starter
+    text: npm module working

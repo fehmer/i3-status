@@ -1,0 +1,12 @@
+node_modules
+test
+src
+.gitlab-ci.yml
+.gitignore
+.npmignore
+.i3Status.log
+.esformatter.json
+.travis.yml
+coverage
+*.map
+docs

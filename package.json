@@ -1,27 +1,56 @@
 {
   "name": "i3-status",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A highly customizable i3wm status bar",
   "main": "lib/index.js",
-  "url": "https://github.com/fehmer/i3-status/issues",
+  "bin": "./lib/index.js",
   "scripts": {
+    "prepublish": "npm run compile",
+    "compile": "babel src/ -d lib -s",
+    "test": "npm run compile && node_modules/mocha/bin/mocha --compilers js:babel-register test --recursive --reporter gitlablist-mocha",
+    "watch": "npm run compile && (babel -w src/ -d lib -s &) && node_modules/mocha/bin/mocha --compilers js:babel-register test --recursive  --reporter min --watch",
+    "cover": "npm run compile && istanbul cover node_modules/mocha/bin/_mocha -- --compilers js:babel-core/register --colors --reporter dot test/ --recursive"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fehmer/i3-status.git"
+    "url": "git@github.com:fehmer/i3-status.git"
+  },
+  "babel": {
+    "presets": [
+      "latest"
+    ]
+  },
+  "engines": {
+    "node": ">=6.0.0"
   },
   "keywords": [
     "i3",
     "i3wn",
     "i3status",
-    "i3blocks"
+    "i3blocks",
+    "i3-bar"
   ],
   "author": "Christian Fehmer",
   "license": "MIT",
   "dependencies": {
-
+    "bytes": "^2.4.0",
+    "commander": "^2.9.0",
+    "diskusage": "^0.1.5",
+    "moment": "^2.17.1",
+    "moment-duration-format": "^1.3.0",
+    "read-yaml": "^1.0.0",
+    "winston": "^2.3.0"
   },
   "devDependencies": {
-
+    "babel-cli": "^6.18.0",
+    "babel-preset-latest": "^6.16.0",
+    "chai": "^3.5.0",
+    "concat-stream": "^1.5.2",
+    "gitlablist-mocha": "^1.0.2",
+    "i3-status-starter": "^0.1.1",
+    "istanbul": "^1.1.0-alpha.1",
+    "codacy-coverage": "^2.0.0",
+    "mocha": "^3.2.0",
+    "sinon": "^1.17.6"
   }
 }

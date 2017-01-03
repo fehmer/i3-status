@@ -1,0 +1,8 @@
+main:
+blocks:
+  - name: date
+    type: text
+    text: '13:37'
+  - name: date
+    type: text
+    text: '42'

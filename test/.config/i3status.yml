@@ -1,0 +1,87 @@
+main:
+  color: '#b00bFF'
+  interval: 30
+blocks:
+  - name: date
+    type: date  # builtin type date
+    label:  # label for the block
+    interval: 10  # update interval in seconds
+    format: MMM DD HH:mm # format string, see http://momentjs.com/docs/#/parsing/string-format/
+    click: gnome-calendar
+  - name: seconds
+    type: date  # builtin type date
+    label: '' # label for the block
+    interval: 1  # update interval in seconds
+    color: '#ff00ff'
+    format: ss # format string, see http://momentjs.com/docs/#/parsing/string-format/
+    click:
+      left: gnome-calendar
+      middle:
+      right: gnome-calculator
+      8: 'google-chrome https://heise.de'
+  - name: text
+    type: text  # builtin type text
+    label: '' # label for the block
+    interval: 10  # update interval in seconds
+    text:  '42' # text to show
+  - name: host
+    type: hostname  # builtin type hostname
+    label:  # label for the block
+    interval: 10  # update interval in seconds
+    fqn: false
+  - name: user
+    type: username  # builtin type username
+    label:  # label for the block
+    interval: 10  # update interval in seconds
+  - name: load
+    type: loadavg  # builtin type loadavg
+    label:  # label for the block
+    interval: 2  # update interval in seconds
+    warning: true
+  - name: uptime
+    type: uptime  # builtin type uptime
+    label:  # label for the block
+    interval: 60  # update interval in seconds
+  - name: disk
+    type: diskfree  # builtin type hostname
+    label:  # label for the block
+    interval: 10  # update interval in seconds
+    warning: 20gb # warn if available space is lower than X gig or 20%
+  - name: disk2
+    type: diskfree  # builtin type hostname
+    label: 'E:' # label for the block
+    interval: 10  # update interval in seconds
+    #mount: '/Volumes/nifty' # mountpoint of the disk
+    mount: '/media/sf_E_DRIVE' # mountpoint of the disk
+  - name: memory
+    type: memory  # builtin type memory used in bytes
+    label:  # label for the block
+    interval: 10  # update interval in seconds
+    display: amount
+    warning: 10
+  - name: memory2
+    type: memory  # builtin type memory used in percent
+    label:  # label for the block
+    interval: 10  # update interval in seconds
+    display: percent
+    warning: 10
+  - name: command2
+    type: command  # builtin type memory used in percent
+    command: '/home/christian/.config/i3/scripts/volume 0'
+    label: '' # label for the block
+    interval: 60  # update interval in seconds
+    click: gnome-alsamixer
+  - name: command
+    type: command  # builtin type memory used in percent
+    command: '/home/christian/workspace/i3-status/test/scripts/test.sh'
+    label: '>' # label for the block
+    interval: 10  # update interval in seconds
+    color: '#FFFF00'
+  - name: module
+    module: nonexisting
+  - name: module2
+    module: /home/christian/workspace/i3-status/test/scripts/testModule.js
+    text: module working
+  - name: module3
+    module: i3-status-starter
+    text: npm module working
