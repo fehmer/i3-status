@@ -1,0 +1,21 @@
+main:
+  color: '#E0E0E0'
+  interval: 5
+blocks:
+  - name: date
+    type: text
+    label: 
+    interval: 10
+    text: '13:37'
+    click: gnome-calendar
+  - name: seconds
+    type: text
+    label: 
+    interval: 1
+    color: '#ff00ff'
+    text: '42'
+    click:
+      left: gnome-calendar
+      middle:
+      right: gnome-calculator
+      8: 'google-chrome https://heise.de'

@@ -1,0 +1,17 @@
+image: node:6
+
+stages:
+- test
+
+# add 'node_modules' to cache for speeding up builds
+cache:
+  untracked: true
+  paths:
+    - node_modules/
+
+
+test:
+  stage: test
+  script:
+  - npm install
+  - npm run cover
