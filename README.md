@@ -2,6 +2,7 @@
 
 Highly customizable and extendable bar for the [i3 window manager](http://i3wm.org/). 
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0c09c73671e349cfb73264d8f204820f)](https://www.codacy.com/app/fehmer/i3-status?utm_source=github.com&utm_medium=referral&utm_content=fehmer/i3-status&utm_campaign=badger)
 [![npm version](https://badge.fury.io/js/i3-status.svg)](https://badge.fury.io/js/i3-status)
 [![Dependency Status](https://gemnasium.com/badges/github.com/fehmer/i3-status.svg)](https://gemnasium.com/github.com/fehmer/i3-status)
 [![Build Status](https://travis-ci.org/fehmer/i3-status.svg?branch=master)](https://travis-ci.org/fehmer/i3-status)
