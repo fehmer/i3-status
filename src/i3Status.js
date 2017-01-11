@@ -126,6 +126,9 @@ export default class i3Status {
             //add label
             block.__label = config.label;
 
+            //add logger
+            block.__logger = logger;
+
             //add listener for updated
             block.on('updated', ((block, data) => {
                 this.update(block.__name, data);

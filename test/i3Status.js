@@ -68,6 +68,7 @@ describe('i3Status', () => {
             expect(block.text).to.equal('13:37');
             expect(block.__index).to.equal(0);
             expect(block.update).to.be.ok;
+            expect(block.__logger).to.be.defined;
 
             //update method exists
             expect(block.update).to.be.ok;

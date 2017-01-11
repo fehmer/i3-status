@@ -2,11 +2,11 @@
 
 Highly customizable and extendable bar for the [i3 window manager](http://i3wm.org/). 
 
-[![npm version](https://badge.fury.io/js/i3-status.svg)](https://badge.fury.io/js/i3-status)
-[![Dependency Status](https://gemnasium.com/badges/github.com/fehmer/i3-status.svg)](https://gemnasium.com/github.com/fehmer/i3-status)
-[![Build Status](https://travis-ci.org/fehmer/i3-status.svg?branch=master)](https://travis-ci.org/fehmer/i3-status)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0c09c73671e349cfb73264d8f204820f)](https://www.codacy.com/app/fehmer/i3-status?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fehmer/i3-status&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/0c09c73671e349cfb73264d8f204820f)](https://www.codacy.com/app/fehmer/i3-status?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fehmer/i3-status&amp;utm_campaign=Badge_Coverage)
+[![npm version](https://img.shields.io/npm/v/i3-status.svg?style=flat-square)](https://www.npmjs.com/package/i3-status)
+[![Dependency Status](https://img.shields.io/gemnasium/fehmer/i3-status.svg?style=flat-square)](https://gemnasium.com/github.com/fehmer/i3-status)
+[![Build Status](https://img.shields.io/travis/fehmer/i3-status.svg?style=flat-square)](https://travis-ci.org/fehmer/i3-status)
+[![Codacy Badge](https://img.shields.io/codacy/grade/0c09c73671e349cfb73264d8f204820f.svg?style=flat-square)](https://www.codacy.com/app/fehmer/i3-status?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fehmer/i3-status&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://img.shields.io/codacy/coverage/0c09c73671e349cfb73264d8f204820f.svg?style=flat-square)](https://www.codacy.com/app/fehmer/i3-status?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fehmer/i3-status&amp;utm_campaign=Badge_Coverage)
 
 
 ## Table of content
