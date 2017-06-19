@@ -20,7 +20,10 @@ export default class Crypto {
     decrypt(value) {
         if (!value) return undefined;
 
-        if (typeof value === 'object') return deepMap(value, this.decrypt, {thisArg: this});
+        if (typeof value === 'object') return deepMap(value, this.decrypt, {
+                thisArg: this,
+                inPlace: true
+            });
 
         if (typeof value === 'string' && value.startsWith(this.prefix)) {
             if (!this.secret)

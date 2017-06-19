@@ -60,7 +60,7 @@ export default class i3Status {
 
         this.config.blocks.forEach(config => {
             var block = this.blocks[config.name];
-            logger.debug('starting %s with interval %d ms', block.name, config.interval);
+            logger.debug('starting %s with interval %d ms', block.__name, config.interval);
 
             //remember interval time
             block.__interval_time = config.interval;
@@ -94,7 +94,7 @@ export default class i3Status {
             this.checkConfig(config);
 
             //decrypt encrypted values
-            config = this.crypto.decrypt(config);
+            config = crypto.decrypt(config);
 
             //use configured interval or fallback to main interval, convert to ms
             config.interval = (config.interval || this.config.main.interval) * 1000;
@@ -228,7 +228,7 @@ export default class i3Status {
      * @private
      */
     resumeBlock(block) {
-        logger.debug('resume interval for ', block.__name);
+        logger.debug(`resume interval (${block.__interval_time}) for ${block.__name}`);
         block.__interval = setInterval(() => {
             block.update();
         }, block.__interval_time);
