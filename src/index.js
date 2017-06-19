@@ -5,6 +5,7 @@
 import i3Status from './i3Status';
 import program from 'commander';
 import logger from 'winston';
+import Crypto from './crypto';
 
 
 //configure logger, log to .i3Status.log, disable console logger
@@ -20,22 +21,48 @@ logger.level = 'info';
 program
     .version('0.0.1')
     .option('-c, --config [file]', 'yaml config file')
-    .option('-v, --verbose')
+    .option('-s, --secret [text]', 'secret for encrypted config values')
+    .option('--encrypt [value]', 'encrypt config value and exit')
+    .option('--decrypt [value]', 'decrypt config value and exit')
+    .option('-v, --verbose', 'enable verbose logging')
     .parse(process.argv);
-
-//config file is required, if missing print help and exit
-if (!program.config) {
-    program.help();
-}
 
 //enable verbose logging if set
 if (program.verbose) {
     logger.level = 'debug';
 }
 
+//encrypt value and exit
+if (program.encrypt || program.decrypt) {
+    if (!program.secret) {
+        console.log('secret is not defined, please provide a secret (master password) on startup with --secret [text]');
+        process.exit(1);
+    }
+
+    const crypto = new Crypto(program.secret);
+
+    if (program.encrypt)
+        console.log(crypto.encrypt(program.encrypt));
+    else if (program.decrypt)
+        console.log(crypto.decrypt(program.decrypt));
+
+    process.exit(0);
+
+
+}
+
+//config file is required, if missing print help and exit
+if (!program.config) {
+    program.help();
+}
+
+
 //log program starg
 logger.info('starting i3-status, logfile:', logConfig.filename);
 logger.debug('verbose logging activated');
+
+if (!program.secret) logger.warn('secret is not defined, please provide a secret (master password) on startup with --secret [text]');
+
 
 //create i3Status instance and start
 let i3 = new i3Status(program, process.stdout);

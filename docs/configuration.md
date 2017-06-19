@@ -38,6 +38,7 @@ blocks:
     color: '#FF0000' # show username in red
 ```
 
+
 ## Main
 
 Settings in the *main* section are for all blocks, but a block can overwrite its own values.

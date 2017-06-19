@@ -27,6 +27,7 @@ var Text = function (_EventEmitter) {
 
         //custom config
         _this.text = options.text || '';
+        _this.secretValue = options.secretValue;
 
         return _this;
     }

@@ -8,6 +8,7 @@ import yaml from 'read-yaml';
 import buildin from './buildin';
 import logger from 'winston';
 import { exec } from 'child_process';
+import Crypto from './crypto';
 
 /** button mapping from i3bar number to button name */
 const named_buttons = {
@@ -42,6 +43,9 @@ export default class i3Status {
 
         //values for output
         this.lines = new Array(config.blocks.length);
+
+        //crypto
+        this.crypto = new Crypto(options.secret);
     }
 
     /**
@@ -77,6 +81,7 @@ export default class i3Status {
      * @private
      */
     initializeBlocks() {
+        const crypto = this.crypto;
         //blocks are buildin types or modules
         var blocks = {};
         this.blocks = blocks;
@@ -87,6 +92,9 @@ export default class i3Status {
 
             //check config to be valid
             this.checkConfig(config);
+
+            //decrypt encrypted values
+            config = this.crypto.decrypt(config);
 
             //use configured interval or fallback to main interval, convert to ms
             config.interval = (config.interval || this.config.main.interval) * 1000;

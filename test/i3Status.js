@@ -68,8 +68,7 @@ describe('i3Status', () => {
             expect(block.text).to.equal('13:37');
             expect(block.__index).to.equal(0);
             expect(block.update).to.be.ok;
-            expect(block.__logger).to.be.defined;
-
+            expect(block).to.have.property('__logger');
             //update method exists
             expect(block.update).to.be.ok;
 
@@ -91,7 +90,8 @@ describe('i3Status', () => {
 
         it('should handle module blocks', () => {
             var instance = new I3Status({
-                config: './test/.config/test-modules.yml'
+                config: './test/.config/test-modules.yml',
+                secret: 'secret'
             });
 
             //replace non-npm module with absolute path
@@ -112,6 +112,7 @@ describe('i3Status', () => {
             expect(block.__name).to.equal('module2');
             expect(block.text).to.equal('module working');
             expect(block.__index).to.equal(1);
+            expect(block.secretValue).to.equal('test'); //decrypted value
 
 
             //get block for  npm module and check it
@@ -119,6 +120,7 @@ describe('i3Status', () => {
             expect(block.__name).to.equal('module3');
             expect(block.text).to.equal('npm module working');
             expect(block.__index).to.equal(2);
+
         });
 
         it('should reject blocks without name', () => {

@@ -7,6 +7,7 @@ blocks:
   - name: module2
     module: replace
     text: module working
+    secretValue: §_JeCTjLjQjv8cAd+DFnJax9Uv9Xc=
   - name: module3
     module: i3-status-starter
     text: npm module working

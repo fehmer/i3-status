@@ -17,6 +17,7 @@ Highly customizable and extendable bar for the [i3 window manager](http://i3wm.o
 - [Quickstart](#quickstart)
   - [Installation](#installation)
   - [Configuration](#configuration)
+  - [A note on security](#a-note-on-security)
   - [Add to i3wm](#add-to-i3wm)
   - [Labels](#labels)
 - [Bugs, Contributing](#bugs-contributing)
@@ -86,13 +87,33 @@ You can extend i3-status with [third-party](https://www.npmjs.com/search?q=i3-st
 For more advanced configurations have a look at the [configuration reference](./docs/configuration.md).
 
 
+### A note on security
+
+Some block modules need security sensitive data like access tokens or passwords. If you don't want to provide the values in plain text in your config file you can encode them using aes256.
+
+Provide the ```--secret <secret>``` option to the i3-status binary. To encrypt a value you can use the i3-status binary too:
+
+``` sh
+/home/<yourname>/my-i3-status/node_modules/.bin/i3-status --secret <secret> --encrypt <value>
+```
+
+The output can be used in the config instead of the plain value.
+
+__Note:__ if you want to change your secret you have to re-encrypt all values. 
+
+You can decrypt the encrypted values from your config using:
+
+``` sh
+/home/<yourname>/my-i3-status/node_modules/.bin/i3-status --secret <secret> --decrypt <value>
+```
+
 ### Add to i3wm
 
 Add this to your i3 config file to show the bar in the i3 wm.
 
 ```
 bar {
-        status_command /home/<yourname>/my-i3-status/node_modules/.bin/i3-status -c /home/<yourname>/my-i3-status/config.yml
+        status_command /home/<yourname>/my-i3-status/node_modules/.bin/i3-status -c /home/<yourname>/my-i3-status/config.yml --secret <secret>
 }
 ```
 

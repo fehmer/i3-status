@@ -7,7 +7,7 @@ stages:
 cache:
   untracked: true
   paths:
-    - node_modules/
+    - node_modules
 
 
 test:
