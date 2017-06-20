@@ -18,8 +18,11 @@ Highly customizable and extendable bar for the [i3 window manager](http://i3wm.o
   - [Installation](#installation)
   - [Configuration](#configuration)
   - [A note on security](#a-note-on-security)
+    - [Enabling encryption in i3-status](#enabling-encryption-in-i3-status)
+    - [Encrypting values](#encrypting-values)
   - [Add to i3wm](#add-to-i3wm)
   - [Labels](#labels)
+  - [Reporters](#reporters)
 - [Bugs, Contributing](#bugs-contributing)
 
 <!-- /MarkdownTOC -->
@@ -91,7 +94,29 @@ For more advanced configurations have a look at the [configuration reference](./
 
 Some block modules need security sensitive data like access tokens or passwords. If you don't want to provide the values in plain text in your config file you can encode them using aes256.
 
-Provide the ```--secret <secret>``` option to the i3-status binary. To encrypt a value you can use the i3-status binary too:
+
+#### Enabling encryption in i3-status
+
+Provide the ```--secret <secret>``` option to the i3-status binary. e.g.
+
+```
+bar {
+        status_command /home/<yourname>/my-i3-status/node_modules/.bin/i3-status -c /home/<yourname>/my-i3-status/config.yml --secret <secret>
+}
+```
+
+If you want to mangage your i3 and i3-status configuration in a SCM like git you should encrypt all sensible data. To prevent the secret to be published you can create a file .secret with the secret and use it with i3-status:
+
+```
+bar {
+        status_command /home/<yourname>/my-i3-status/node_modules/.bin/i3-status -c /home/<yourname>/my-i3-status/config.yml --secret `cat /home/<yourname>/my-i3-status/.secret`
+}
+```
+
+
+#### Encrypting values
+
+To encrypt a value you can use the i3-status binary too:
 
 ``` sh
 /home/<yourname>/my-i3-status/node_modules/.bin/i3-status --secret <secret> --encrypt <value>
@@ -125,6 +150,13 @@ After reloading i3 there should be a bar with the date/time and your username. I
 You can use utf-8 symbols for your lables. Another option is to install [Font Awesome](http://fontawesome.io) and use the icons from the [cheet sheet](http://fontawesome.io/cheatsheet/) as a label. Just copy the icon, not the html code.
 
 
+### Reporters
+
+Some modules provide additional information besides the output in the i3-bar. A reporter displays the additional information e.g. in a popup window. The [reporter reference](docs/reporter.md) shows you how to choose and customize a reporter. 
+
+![Reporter in action](docs/reporter.png)
+
+If you want to develop your own modules and want to use a reporter have a look at the [i3-status-starter](https://github.com/fehmer/i3-status-starter) documentation.
 
 ## Bugs, Contributing
 

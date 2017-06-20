@@ -9,6 +9,7 @@ import buildin from './buildin';
 import logger from 'winston';
 import { exec } from 'child_process';
 import Crypto from './crypto';
+import NoReporter from './noReporter';
 
 /** button mapping from i3bar number to button name */
 const named_buttons = {
@@ -46,6 +47,9 @@ export default class i3Status {
 
         //crypto
         this.crypto = new Crypto(options.secret);
+
+        //init repoter
+        this.reporter = this.initReporter(config.reporter);
     }
 
     /**
@@ -102,7 +106,8 @@ export default class i3Status {
             //prepare default output
             var output = {
                 name: config.name,
-                color: config.color || this.config.main.color
+                color: config.color || this.config.main.color,
+                background: config.background || this.config.main.background
             };
 
             //load block
@@ -136,6 +141,9 @@ export default class i3Status {
 
             //add logger
             block.__logger = logger;
+
+            //add reporter
+            block.__reporter = Object.assign(this.reporter,{});
 
             //add listener for updated
             block.on('updated', ((block, data) => {
@@ -244,6 +252,12 @@ export default class i3Status {
             throw new Error('config error: block needs a name');
         if (!config.type && !config.module)
             throw new Error('config error: block ' + config.name + ' has no type/module');
+    }
+
+    initReporter(config){
+        if(!config || !config.module) return new NoReporter();
+        var Reporter = require(config.module).default;
+        return new Reporter(config);
     }
 
 }
