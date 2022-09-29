@@ -22,7 +22,9 @@ export default class LanIP extends EventEmitter {
      * update the block's output with the IP of the specified interface
      */
     update() {
-        const output = this.buildText();
+        const output = {};
+        Object.assign(output, this.output);
+        Object.assign(output, this.buildText());
 
         output.full_text = output.text;
         output.short_text = output.text;
