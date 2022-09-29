@@ -100,6 +100,22 @@ Activate *fqn* with ```fqn: true``` to show the hostname fully qualified with th
 ```
 
 
+## LAN IP
+
+The type **lanip** shows the current IP address of the sepcified interface.
+
+### Interface
+
+Specify *interface* to display the IP address of the desired interface. If this property is not specified, then an error is shown.
+
+### Example
+
+``` yaml
+  - name: example
+    type: lanip
+    interface: wlan0
+```
+
 ## Load Average
 
 The type **loadavg** shows the load average for the past minute in the default [unix format](https://en.wikipedia.org/wiki/Load_(computing)).
