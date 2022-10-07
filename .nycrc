@@ -1,0 +1,11 @@
+{
+  "all": true,
+  "check-coverage": true,
+   "include": [
+    "lib/**"
+  ],
+  "branches": 59,
+  "lines": 70,
+  "functions": 62,
+  "statements": 70
+}

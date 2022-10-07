@@ -7,9 +7,10 @@
   "scripts": {
     "prepublish": "npm run compile",
     "compile": "babel src/ -d lib -s",
-    "test": "npm run compile && node_modules/mocha/bin/mocha --compilers js:babel-register test --recursive --reporter gitlablist-mocha",
+    "test": "node_modules/mocha/bin/mocha --compilers js:babel-register test --recursive --reporter gitlablist-mocha",
     "watch": "npm run compile && (babel -w src/ -d lib -s &) && node_modules/mocha/bin/mocha --compilers js:babel-register test --recursive  --reporter min --watch",
-    "cover": "npm run compile && istanbul cover node_modules/mocha/bin/_mocha -- --compilers js:babel-core/register --colors --reporter dot test/ --recursive"
+    "coverage": "nyc --reporter json-summary npm run test",
+    "coverage-check": "nyc report && nyc check-coverage"
   },
   "repository": {
     "type": "git",
@@ -52,8 +53,8 @@
     "concat-stream": "^1.5.2",
     "gitlablist-mocha": "^1.0.2",
     "i3-status-starter": "^0.1.1",
-    "istanbul": "^1.1.0-alpha.1",
     "mocha": "^3.2.0",
+    "nyc": "^15.1.0",
     "sinon": "^1.17.6"
   }
 }

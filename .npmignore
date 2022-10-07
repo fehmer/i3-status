@@ -6,7 +6,9 @@ src
 .npmignore
 .i3Status.log
 .esformatter.json
-.travis.yml
 coverage
+.nyc_output
+.nycrc
+.github
 *.map
 docs
