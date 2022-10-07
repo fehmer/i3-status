@@ -87,7 +87,6 @@ export default class i3Status {
     async initializeBlocks() {
         const crypto = this.crypto;
         //for all blocks from the config
-        var i = 0;
         
         //check config to be valid
         this.checkConfig();
@@ -168,17 +167,22 @@ export default class i3Status {
             if (!block.action)
                 block.action = defaultAction;
 
-            //add index
-            block.__index = i++;
-
            return block;
         }));
 
-        this.blocks = initBlocks.reduce(function(map, obj) {
-            map[obj['__name']] = obj;
+        const initBlocksMap = initBlocks.reduce((map, block)=> {
+            map[block['__name']] = block;
             return map;
         }, {});
-        ;
+        
+
+        var index = 0;
+        this.blocks = this.config.blocks.reduce( (map, config)=> {
+            var block=initBlocksMap[config.name];
+            block.__index= index++;
+            map[block['__name']] = block;
+            return map;
+        },{});
     }
 
     /**
@@ -190,7 +194,6 @@ export default class i3Status {
             let block = this.blocks[name];
             block.interval = clearInterval(block.__interval);
         }
-
     }
 
     /**
