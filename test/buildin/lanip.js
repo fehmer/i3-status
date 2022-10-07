@@ -6,6 +6,10 @@ import * as common from './../blockCommon.js';
 import os from 'os';
 import Lanip from './../../src/buildin/lanip.js';
 
+afterEach(() => {
+  sinon.restore();
+});
+
 describe('Buildin Lanip', function() {
 
     describe('#constructor basic', common.constructor(Lanip));

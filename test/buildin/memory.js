@@ -6,6 +6,10 @@ import * as common from './../blockCommon.js';
 import os from 'os';
 import Memory from './../../src/buildin/memory.js';
 
+afterEach(() => {
+  sinon.restore();
+});
+
 describe('Buildin Memory', function() {
     describe('#constructor basic', common.constructor(Memory));
 

@@ -6,6 +6,10 @@ import * as common from './../blockCommon.js';
 import os from 'os';
 import Hostname from './../../src/buildin/hostname.js';
 
+afterEach(() => {
+  sinon.restore();
+});
+
 describe('Buildin Hostname', function() {
 
     describe('#constructor basic', common.constructor(Hostname));

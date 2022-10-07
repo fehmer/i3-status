@@ -6,6 +6,10 @@ import * as common from './../blockCommon.js';
 import moment from 'moment';
 import DateClass from './../../src/buildin/date.js';
 
+afterEach(() => {
+  sinon.restore();
+});
+
 //use fixed time for test
 const fakeTime = moment('2016-04-03 12:34:56');
 
