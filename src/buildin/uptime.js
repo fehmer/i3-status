@@ -3,7 +3,7 @@
 /** @module buildin/uptime */
 
 import { EventEmitter } from 'events';
-import { uptime } from 'os';
+import os from 'os';
 import moment from 'moment';
 import moment_format from 'moment-duration-format';
 
@@ -33,7 +33,7 @@ export default class Uptime extends EventEmitter {
      * Remember to emit updated event when done.
      */
     update() {
-        var text = this.buildText(uptime());
+        var text = this.buildText(os.uptime());
 
         //update output
         this.output.full_text = text;

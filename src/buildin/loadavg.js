@@ -3,7 +3,7 @@
 /** @module buildin/loadavg */
 
 import { EventEmitter } from 'events';
-import { loadavg, cpus } from 'os';
+import os from 'os';
 
 /**
  * Buildin LoadAvg shows the load average for the last minute.
@@ -25,7 +25,7 @@ export default class LoadAvg extends EventEmitter {
         this.showPercentage = options.display === 'percentage';
         this.warning = options.warning || false;
 
-        this.ncpu = cpus().length;
+        this.ncpu = os.cpus().length;
     }
 
     /**
@@ -35,7 +35,7 @@ export default class LoadAvg extends EventEmitter {
     update() {
         //update output
         var text;
-        var avg = loadavg()[0];
+        var avg = os.loadavg()[0];
         var percentage = avg / this.ncpu;
 
         if (this.showPercentage) {

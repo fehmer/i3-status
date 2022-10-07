@@ -1,12 +1,14 @@
 'use strict';
 
 import { expect } from 'chai';
+import assert from 'assert';
 import concat from 'concat-stream';
 import logger from 'winston';
 import path from 'path';
 import fs from 'fs';
-import I3Status from './../lib/i3Status';
-import TextClass from './../lib/buildin/text';
+import { fileURLToPath } from 'url';
+import I3Status from './../src/i3Status.js';
+import TextClass from './../src/buildin/text.js';
 
 
 if (process.env.DEBUG)
@@ -52,14 +54,14 @@ describe('i3Status', () => {
 
     describe('initializeBlocks', () => {
 
-        it('should handle buildin blocks', () => {
+        it('should handle buildin blocks',async() => {
 
             var instance = new I3Status({
                 config: './test/.config/test.yml'
             });
 
             //call initializeBlocks
-            instance.initializeBlocks();
+            await instance.initializeBlocks();
 
             //get block for date and check it
             var block = instance.blocks.date;
@@ -88,23 +90,22 @@ describe('i3Status', () => {
 
         });
 
-        it('should handle module blocks', () => {
+        it('should handle module blocks', async () => {
             var instance = new I3Status({
                 config: './test/.config/test-modules.yml',
                 secret: 'secret'
             });
 
             //replace non-npm module with absolute path
-            instance.config.blocks[1].module = path.join(path.dirname(fs.realpathSync(__filename)), 'scripts/testModule.js')
+            instance.config.blocks[1].module = path.join(path.dirname(fs.realpathSync(fileURLToPath(import.meta.url))), 'scripts/testModule.js')
 
             //call initializeBlocks
-            instance.initializeBlocks();
-
+            await instance.initializeBlocks();
 
             //get block for nonexisting module and check it
             var block = instance.blocks.module;
             expect(block.__name).to.equal('module');
-            expect(block.text).to.contain('unable to load module: Error: Cannot find module \'nonexisting\'');
+            expect(block.text).to.contain('unable to load module \'nonexisting\':');
             expect(block.__index).to.equal(0);
 
             //get block for non npm module and check it
@@ -123,43 +124,52 @@ describe('i3Status', () => {
 
         });
 
-        it('should reject blocks without name', () => {
+        it('should reject blocks without name', async() => {
             var instance = new I3Status({
                 config: './test/.config/test-noname.yml'
             });
 
-            //call initializeBlocks should throw error
-            expect(instance.initializeBlocks.bind(instance)).to.throw('config error: block needs a name');
+            await assert.rejects(async () => instance.initializeBlocks(),
+                {message: 'config error: block needs a name'}
+            );
+           
+           
         });
 
-        it('should reject blocks without type/module', () => {
+        it('should reject blocks without type/module', async() => {
             var instance = new I3Status({
                 config: './test/.config/test-notype.yml'
             });
 
             //call initializeBlocks should throw error
-            expect(instance.initializeBlocks.bind(instance)).to.throw('config error: block date has no type/module');
+             await assert.rejects(async () => instance.initializeBlocks(),
+                {message: 'config error: block date has no type/module'}
+            );
 
         });
-        it('should reject blocks with duplicate names', () => {
+   
+
+        it('should reject blocks with duplicate names', async() => {
             var instance = new I3Status({
                 config: './test/.config/test-duplicate.yml'
             });
 
             //call initializeBlocks should throw error
-            expect(instance.initializeBlocks.bind(instance)).to.throw('duplicate block name found: date');
+           await assert.rejects(async () => instance.initializeBlocks(),
+                {message: 'config error: duplicate block name found'}
+            );
         });
+      
     });
 
     describe('run', () => {
 
-        it('should output header and start modules', (done) => {
+        it('should output header and start modules', async() => {
 
             //capture stdout
             var capture = concat((lines) => {
                 //header should be outputted and the first line with null values
                 expect(lines).to.equal('{"version":1,"click_events":true}\n[[]\n');
-                done();
             });
 
             //configure instance, use capture as output
@@ -212,7 +222,7 @@ describe('i3Status', () => {
 
     describe('run', () => {
 
-        it('should output all blocks', (done) => {
+        it('should output all blocks', async() => {
 
             //capture stdout
             var capture = concat((lines) => {
@@ -221,8 +231,6 @@ describe('i3Status', () => {
                     ',[{"name":"date","color":"#E0E0E0","full_text":" 13:37","short_text":" 13:37"},null]\n' +
                     ',[{"name":"date","color":"#E0E0E0","full_text":" 13:37","short_text":" 13:37"},{"name":"seconds","color":"#ff00ff","full_text":" 42","short_text":" 42"}]\n'
                 );
-
-                done();
             });
 
             //configure instance, use capture as output
@@ -231,7 +239,7 @@ describe('i3Status', () => {
             }, capture);
 
             //init blocks, start update on each one once
-            instance.initializeBlocks();
+            await instance.initializeBlocks();
             instance.blocks.date.update();
             instance.blocks.seconds.update();
 
@@ -243,9 +251,3 @@ describe('i3Status', () => {
     });
 
 })
-
-
-/*
-
-
-*/

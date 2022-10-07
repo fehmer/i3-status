@@ -2,9 +2,9 @@
 
 import { expect } from 'chai';
 import sinon from "sinon";
-import * as common from './../blockCommon';
+import * as common from './../blockCommon.js';
 import moment from 'moment';
-import DateClass from './../../lib/buildin/date';
+import DateClass from './../../src/buildin/date.js';
 
 //use fixed time for test
 const fakeTime = moment('2016-04-03 12:34:56');
@@ -26,8 +26,8 @@ describe('Buildin Date', function() {
     describe('update basic', common.update(DateClass));
 
     describe('update', function() {
-        it('should update the output and fire updated', sinon.test(function(done) {
-            this.stub(moment, 'now').returns(fakeTime);
+        it('should update the output and fire updated', ()=>  {
+            sinon.stub(moment, 'now').returns(fakeTime);
             //construct block
             var block = new DateClass({
                 format: 'HH:mm'
@@ -37,9 +37,8 @@ describe('Buildin Date', function() {
                 //check output line
                 expect(output.short_text).to.equal('12:34');
                 expect(output.full_text).to.equal('12:34');
-                done();
             });
 
-        }));
+        });
     });
 })

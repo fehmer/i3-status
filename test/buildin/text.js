@@ -1,8 +1,8 @@
 'use strict';
 
 import { expect } from 'chai';
-import * as common from './../blockCommon';
-import Text from './../../lib/buildin/text';
+import * as common from './../blockCommon.js';
+import Text from './../../src/buildin/text.js';
 
 describe('Buildin Text', function() {
     describe('#constructor basic', common.constructor(Text));

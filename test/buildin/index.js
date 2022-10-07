@@ -1,16 +1,16 @@
 'use strict';
 
 import { expect } from 'chai';
-import buildin from './../../lib/buildin';
-import DateClass from './../../lib/buildin/date';
-import Text from './../../lib/buildin/text';
-import Hostname from './../../lib/buildin/hostname';
-import Username from './../../lib/buildin/username';
-import Memory from './../../lib/buildin/memory';
-import LoadAvg from './../../lib/buildin/loadavg';
-import Uptime from './../../lib/buildin/uptime';
-import DiskFree from './../../lib/buildin/diskfree';
-import Command from './../../lib/buildin/command';
+import buildin from './../../src/buildin/index.js';
+import DateClass from './../../src/buildin/date.js';
+import Text from './../../src/buildin/text.js';
+import Hostname from './../../src/buildin/hostname.js';
+import Username from './../../src/buildin/username.js';
+import Memory from './../../src/buildin/memory.js';
+import LoadAvg from './../../src/buildin/loadavg.js';
+import Uptime from './../../src/buildin/uptime.js';
+import DiskFree from './../../src/buildin/diskfree.js';
+import Command from './../../src/buildin/command.js';
 
 describe('Buildins meta', () => {
     it('should contain type date', () => {

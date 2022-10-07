@@ -3,7 +3,7 @@
 /** @module buildin/username */
 
 import { EventEmitter } from 'events';
-import { userInfo } from 'os';
+import os from 'os';
 
 /**
  * Buildin username shows the name of the current user.
@@ -27,7 +27,7 @@ export default class Username extends EventEmitter {
      */
     update() {
         //update output
-        var text = userInfo().username;
+        var text = os.userInfo().username;
         this.output.full_text = text;
         this.output.short_text = text;
 

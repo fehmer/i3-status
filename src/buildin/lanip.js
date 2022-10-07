@@ -3,7 +3,7 @@
 /** @module builtin/lanip */
 
 import { EventEmitter } from 'events';
-import { networkInterfaces } from 'os';
+import os from 'os';
 
 export default class LanIP extends EventEmitter {
     /**
@@ -22,7 +22,7 @@ export default class LanIP extends EventEmitter {
      * update the block's output with the IP of the specified interface
      */
     update() {
-        var text = this.extractIp(networkInterfaces());
+        var text = this.extractIp(os.networkInterfaces());
         this.output.full_text = text;
         this.output.short_text = text;
 

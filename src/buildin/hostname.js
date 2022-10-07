@@ -2,7 +2,7 @@
 
 /** @module buildin/hostname */
 import { EventEmitter } from 'events';
-import { hostname } from 'os';
+import os from 'os';
 
 /**
  * Buildin hostname shows the hostname as short name or full qualified if configured.
@@ -29,7 +29,7 @@ export default class Hostname extends EventEmitter {
      */
     update() {
         //update output
-        var text = this.transform(hostname());
+        var text = this.transform(os.hostname());
         this.output.full_text = text;
         this.output.short_text = text;
 

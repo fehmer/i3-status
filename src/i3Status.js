@@ -5,11 +5,11 @@
 /** @module i3Status */
 
 import yaml from 'read-yaml';
-import buildin from './buildin';
+import buildin from './buildin/index.js';
 import logger from 'winston';
 import { exec } from 'child_process';
-import Crypto from './crypto';
-import NoReporter from './noReporter';
+import Crypto from './crypto.js';
+import NoReporter from './noReporter.js';
 
 /** button mapping from i3bar number to button name */
 const named_buttons = {
@@ -55,12 +55,12 @@ export default class i3Status {
     /**
      * start i3Status. Will initialize all blocks and update them according to the configured interval.
      */
-    run() {
+    async run() {
         //print header for i3
         this.output.write('{"version":1,"click_events":true}\n[[]\n');
 
         //load and update all blocks
-        this.initializeBlocks();
+        await this.initializeBlocks();
 
         this.config.blocks.forEach(config => {
             var block = this.blocks[config.name];
@@ -84,18 +84,15 @@ export default class i3Status {
      * initialize all blocks, sets common properties and adds listeners for updated, pause and resume.
      * @private
      */
-    initializeBlocks() {
+    async initializeBlocks() {
         const crypto = this.crypto;
-        //blocks are buildin types or modules
-        var blocks = {};
-        this.blocks = blocks;
-
         //for all blocks from the config
         var i = 0;
-        this.config.blocks.forEach(config => {
+        
+        //check config to be valid
+        this.checkConfig();
 
-            //check config to be valid
-            this.checkConfig(config);
+        const initBlocks = await Promise.all(this.config.blocks.map(async config => {
 
             //decrypt encrypted values
             config = crypto.decrypt(config);
@@ -120,11 +117,18 @@ export default class i3Status {
             } else if (config.module) {
                 //load module
                 try {
-                    var module = require(config.module).default;
-                    var block = new module(config, output);
+                    const module = await import(config.module);
+                    var moduleConstructor = module.default;
+
+                    //legacy modules
+                    if(module.default.default){
+                        moduleConstructor=module.default.default;
+                    }
+
+                    var block = new moduleConstructor(config, output);
                 } catch (e) {
                     var block = new buildin.text({
-                        text: 'unable to load module: ' + e
+                        text: `unable to load module '${config.module}': `+e
                     });
                     block.output.color = '#FF0000';
                 }
@@ -167,12 +171,14 @@ export default class i3Status {
             //add index
             block.__index = i++;
 
-            //add to blocks
-            if (blocks[config.name]) {
-                throw new Error('duplicate block name found: ' + config.name);
-            }
-            blocks[config.name] = block;
-        });
+           return block;
+        }));
+
+        this.blocks = initBlocks.reduce(function(map, obj) {
+            map[obj['__name']] = obj;
+            return map;
+        }, {});
+        ;
     }
 
     /**
@@ -243,15 +249,21 @@ export default class i3Status {
     }
 
     /**
-     * check if the config item is valid.
+     * check if the config is valid.
      * @param {Object} - config for the block to test
      * @private
      */
-    checkConfig(config) {
-        if (!config.name)
-            throw new Error('config error: block needs a name');
-        if (!config.type && !config.module)
-            throw new Error('config error: block ' + config.name + ' has no type/module');
+    checkConfig() {
+        //check for duplicate names
+        if(this.config.blocks.length != new Set(this.config.blocks.map(it=>it.name)).size){
+            throw new Error('config error: duplicate block name found');
+        }
+        this.config.blocks.forEach(config=> {
+            if (!config.name)
+                throw new Error('config error: block needs a name');
+            if (!config.type && !config.module)
+                throw new Error('config error: block ' + config.name + ' has no type/module');
+        });
     }
 
     initReporter(config){

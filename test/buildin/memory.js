@@ -2,9 +2,9 @@
 
 import { expect } from 'chai';
 import sinon from 'sinon';
-import * as common from './../blockCommon';
+import * as common from './../blockCommon.js';
 import os from 'os';
-import Memory from './../../lib/buildin/memory';
+import Memory from './../../src/buildin/memory.js';
 
 describe('Buildin Memory', function() {
     describe('#constructor basic', common.constructor(Memory));
@@ -40,10 +40,10 @@ describe('Buildin Memory', function() {
     describe('update basic', common.update(Memory));
 
     describe('update', function() {
-        it('should update the output amount and fire updated', sinon.test(function(done) {
+        it('should update the output amount and fire updated', ()=> {
             //mock os.freemem() and os.totalmem
-            this.stub(os, 'freemem').returns(15.5 * 1024 * 1024 * 1024);
-            this.stub(os, 'totalmem').returns(16 * 1024 * 1024 * 1024);
+            sinon.stub(os, 'freemem').returns(15.5 * 1024 * 1024 * 1024);
+            sinon.stub(os, 'totalmem').returns(16 * 1024 * 1024 * 1024);
             //construct block
             var block = new Memory({
                 display: 'amount'
@@ -54,15 +54,13 @@ describe('Buildin Memory', function() {
                 expect(output.short_text).to.equal('512MB/16GB');
                 expect(output.full_text).to.equal('512MB/16GB');
                 expect(output.urgent).to.be.false;
-
-                done();
             });
-        }));
+        });
 
-        it('should update the output percent and fire updated', sinon.test(function(done) {
+        it('should update the output percent and fire updated', ()=> {
             //mock os.freemem() and os.totalmem
-            this.stub(os, 'freemem').returns(4 * 1024 * 1024 * 1024);
-            this.stub(os, 'totalmem').returns(16 * 1024 * 1024 * 1024);
+            sinon.stub(os, 'freemem').returns(4 * 1024 * 1024 * 1024);
+            sinon.stub(os, 'totalmem').returns(16 * 1024 * 1024 * 1024);
             //construct block
             var block = new Memory();
 
@@ -71,15 +69,13 @@ describe('Buildin Memory', function() {
                 expect(output.short_text).to.equal('75%');
                 expect(output.full_text).to.equal('75%');
                 expect(output.urgent).to.be.false;
-
-                done();
             });
-        }));
+        });
 
-        it('should update the output percent_free and fire updated', sinon.test(function(done) {
+        it('should update the output percent_free and fire updated', ()=> {
             //mock os.freemem() and os.totalmem
-            this.stub(os, 'freemem').returns(4 * 1024 * 1024 * 1024);
-            this.stub(os, 'totalmem').returns(16 * 1024 * 1024 * 1024);
+            sinon.stub(os, 'freemem').returns(4 * 1024 * 1024 * 1024);
+            sinon.stub(os, 'totalmem').returns(16 * 1024 * 1024 * 1024);
             //construct block
             var block = new Memory({
                 display: 'percent_free'
@@ -90,16 +86,14 @@ describe('Buildin Memory', function() {
                 expect(output.short_text).to.equal('25%');
                 expect(output.full_text).to.equal('25%');
                 expect(output.urgent).to.be.false;
-
-                done();
             });
-        }));
+        });
 
 
-        it('should update the output percent_free with urgent and fire updated', sinon.test(function(done) {
+        it('should update the output percent_free with urgent and fire updated',  ()=> {
             //mock os.freemem() and os.totalmem
-            this.stub(os, 'freemem').returns(.5 * 1024 * 1024 * 1024);
-            this.stub(os, 'totalmem').returns(16 * 1024 * 1024 * 1024);
+            sinon.stub(os, 'freemem').returns(.5 * 1024 * 1024 * 1024);
+            sinon.stub(os, 'totalmem').returns(16 * 1024 * 1024 * 1024);
             //construct block
             var block = new Memory({
                 display: 'percent_free'
@@ -111,9 +105,8 @@ describe('Buildin Memory', function() {
                 expect(output.full_text).to.equal('3%');
                 expect(output.urgent).to.be.true;
 
-                done();
             });
-        }));
+        });
     });
 
 })

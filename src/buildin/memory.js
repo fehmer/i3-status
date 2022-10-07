@@ -3,7 +3,7 @@
 /** @module buildin/memory */
 
 import { EventEmitter } from 'events';
-import { freemem, totalmem } from 'os';
+import os from 'os';
 import bytes from 'bytes';
 
 /**
@@ -53,8 +53,8 @@ export default class Memory extends EventEmitter {
      */
     buildText() {
         var output = {};
-        var free = freemem();
-        var total = totalmem();
+        var free = os.freemem();
+        var total = os.totalmem();
 
         if (this.display == 'amount') {
             //show bytes used and bytes total

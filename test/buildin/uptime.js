@@ -3,8 +3,8 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 import os from 'os';
-import * as common from './../blockCommon';
-import Uptime from './../../lib/buildin/uptime';
+import * as common from './../blockCommon.js';
+import Uptime from './../../src/buildin/uptime.js';
 
 describe('Buildin Uptime', function() {
     describe('#constructor basic', common.constructor(Uptime));
@@ -12,10 +12,10 @@ describe('Buildin Uptime', function() {
     describe('update basic', common.update(Uptime));
 
     describe('update', function() {
-        it('should update the output and fire updated', sinon.test(function(done) {
+        it('should update the output and fire updated', ()=> {
 
             //mock os.uptime
-            this.stub(os, 'uptime').returns(m(45));
+            sinon.stub(os, 'uptime').returns(m(45));
             //construct block
             var block = new Uptime();
 
@@ -23,10 +23,8 @@ describe('Buildin Uptime', function() {
                 //check output line
                 expect(output.short_text).to.equal('45');
                 expect(output.full_text).to.equal('45');
-
-                done();
             });
-        }));
+        });
     });
 
     describe('buildText', function() {
@@ -49,7 +47,7 @@ describe('Buildin Uptime', function() {
             var text = new Uptime({
                 format: 'h [hours]'
             }).buildText(h(500) + m(31));
-            expect(text).to.equal('500 hours');
+            expect(text).to.equal('501 hours');
         });
 
         it('should not trim if trim is set to false', () => {
