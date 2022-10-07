@@ -4,7 +4,7 @@
 
 import { EventEmitter } from 'events';
 import diskusage from 'diskusage';
-import { homedir } from 'os';
+import os from 'os';
 import bytes from 'bytes';
 
 /**
@@ -23,7 +23,7 @@ export default class DiskFree extends EventEmitter {
         this.output = output || {};
 
         //custom config
-        this.mount = options.mount || homedir();
+        this.mount = options.mount || os.homedir();
         this.warning = options.warning;
 
     }

@@ -1,10 +1,11 @@
 'use strict';
 
 import { expect } from 'chai';
-import * as common from './../blockCommon';
+import * as common from './../blockCommon.js';
 import path from 'path';
 import fs from 'fs';
-import Command from './../../lib/buildin/command';
+import { fileURLToPath } from 'url';
+import Command from './../../src/buildin/command.js';
 
 describe('Buildin Command', function() {
     describe('#constructor basic', common.constructor(Command));
@@ -23,7 +24,7 @@ describe('Buildin Command', function() {
         it('should update the output and fire updated', (done) => {
             //construct block
             var block = new Command({
-                command: path.join(path.dirname(fs.realpathSync(__filename)), '../scripts/test.sh')
+                command: path.join(path.dirname(fs.realpathSync(fileURLToPath(import.meta.url))), '../scripts/test.sh')
             });
 
             common.execute(block, (output) => {
@@ -46,7 +47,7 @@ describe('Buildin Command', function() {
         it('should update the output urgent and fire updated', (done) => {
             //construct block
             var block = new Command({
-                command: path.join(path.dirname(fs.realpathSync(__filename)), '../scripts/urgent.sh')
+                command: path.join(path.dirname(fs.realpathSync(fileURLToPath(import.meta.url))), '../scripts/urgent.sh')
             });
 
             common.execute(block, (output) => {

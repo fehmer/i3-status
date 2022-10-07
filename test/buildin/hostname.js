@@ -2,9 +2,9 @@
 
 import { expect } from 'chai';
 import sinon from 'sinon';
-import * as common from './../blockCommon';
+import * as common from './../blockCommon.js';
 import os from 'os';
-import Hostname from './../../lib/buildin/hostname';
+import Hostname from './../../src/buildin/hostname.js';
 
 describe('Buildin Hostname', function() {
 
@@ -22,10 +22,10 @@ describe('Buildin Hostname', function() {
     describe('update basic', common.update(Hostname));
 
     describe('update', function() {
-        it('should update the output and fire updated', sinon.test(function(done) {
+        it('should update the output and fire updated', ()=> {
 
             //mock os.hostname()
-            this.stub(os, 'hostname').returns('agecanonix.local');
+            sinon.stub(os, 'hostname').returns('agecanonix.local');
 
             //construct block
             var block = new Hostname({
@@ -36,10 +36,8 @@ describe('Buildin Hostname', function() {
                 //check output line
                 expect(output.short_text).to.equal('agecanonix.local');
                 expect(output.full_text).to.equal('agecanonix.local');
-
-                done();
             });
-        }));
+        });
     });
 
     describe('transform', function() {

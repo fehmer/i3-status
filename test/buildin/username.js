@@ -2,9 +2,9 @@
 
 import { expect } from 'chai';
 import sinon from 'sinon';
-import * as common from './../blockCommon';
+import * as common from './../blockCommon.js';
 import os from 'os';
-import Username from './../../lib/buildin/username';
+import Username from './../../src/buildin/username.js';
 
 describe('Buildin Username', function() {
 
@@ -13,24 +13,22 @@ describe('Buildin Username', function() {
     describe('update basic', common.update(Username));
 
     describe('update', function() {
-        it('should update the output and fire updated', sinon.test(function(done) {
+        it('should update the output and fire updated', async() => {
 
             //mock os.userInfo()
-            this.stub(os, 'userInfo').returns({
+            sinon.stub(os, 'userInfo').returns({
                 username: 'peter'
             });
 
             //construct block
             var block = new Username();
 
-            common.execute(block, (output) => {
+            await common.execute(block, (output) => {
                 //check output line
                 expect(output.short_text).to.equal('peter');
                 expect(output.full_text).to.equal('peter');
-
-                done();
             });
 
-        }));
+        });
     });
 })

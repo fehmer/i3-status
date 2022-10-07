@@ -2,11 +2,11 @@
 
 import { expect } from 'chai';
 import sinon from 'sinon';
-import * as common from './../blockCommon';
+import * as common from './../blockCommon.js';
 import os from 'os';
-import Lanip from './../../lib/buildin/lanip';
+import Lanip from './../../src/buildin/lanip.js';
 
-describe('Buildin lanip', function() {
+describe('Buildin Lanip', function() {
 
     describe('#constructor basic', common.constructor(Lanip));
 
@@ -22,10 +22,10 @@ describe('Buildin lanip', function() {
     describe('update basic', common.update(Lanip));
 
     describe('update', function() {
-        it('should update the output and fire updated', sinon.test(function(done) {
+        it('should update the output and fire updated', ()=> {
 
             //mock os.lanip()
-            this.stub(os, 'networkInterfaces').returns({
+            sinon.stub(os, 'networkInterfaces').returns({
                 lo: [{
                     address: '127.0.0.1',
                     netmask: '255.0.0.0',
@@ -45,10 +45,8 @@ describe('Buildin lanip', function() {
                 //check output line
                 expect(output.short_text).to.equal('127.0.0.1');
                 expect(output.full_text).to.equal('127.0.0.1');
-
-                done();
             });
-        }));
+        });
     });
 
     describe('getIp', function() {

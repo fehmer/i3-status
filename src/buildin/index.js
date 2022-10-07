@@ -2,16 +2,16 @@
 
 /** @module buildin */
 
-import command from './command';
-import date from './date';
-import diskfree from './diskfree';
-import hostname from './hostname';
-import lanip from './lanip';
-import loadavg from './loadavg';
-import memory from './memory';
-import text from './text';
-import uptime from './uptime';
-import username from './username';
+import command from './command.js';
+import date from './date.js';
+import diskfree from './diskfree.js';
+import hostname from './hostname.js';
+import lanip from './lanip.js';
+import loadavg from './loadavg.js';
+import memory from './memory.js';
+import text from './text.js';
+import uptime from './uptime.js';
+import username from './username.js';
 
 /**
  * buildins contains all available buildin types

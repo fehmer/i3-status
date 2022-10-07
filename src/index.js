@@ -2,10 +2,10 @@
 
 'use strict';
 
-import i3Status from './i3Status';
+import i3Status from './i3Status.js';
 import program from 'commander';
 import logger from 'winston';
-import Crypto from './crypto';
+import Crypto from './crypto.js';
 
 
 //configure logger, log to .i3Status.log, disable console logger
@@ -66,7 +66,7 @@ if (!program.secret) logger.warn('secret is not defined, please provide a secret
 
 //create i3Status instance and start
 let i3 = new i3Status(program, process.stdout);
-i3.run();
+await i3.run();
 
 
 //read from stdin, try to parse json and pass to i3Status

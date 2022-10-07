@@ -2,7 +2,7 @@
 
 import chai from 'chai';
 import chaiString from 'chai-string';
-import Crypto from './../lib/crypto';
+import Crypto from './../src/crypto.js';
 
 const expect = chai.expect;
 const prefix = '§_';

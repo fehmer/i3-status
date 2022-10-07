@@ -8,7 +8,7 @@ src
 .esformatter.json
 coverage
 .nyc_output
-.nycrc
+.c8rc
 .github
 *.map
 docs
