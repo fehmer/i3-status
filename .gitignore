@@ -2,4 +2,3 @@ lib
 node_modules
 .i3Status.log
 coverage
-package-lock.json
