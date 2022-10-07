@@ -104,7 +104,7 @@ describe('i3Status', () => {
             //get block for nonexisting module and check it
             var block = instance.blocks.module;
             expect(block.__name).to.equal('module');
-            expect(block.text).to.equal('unable to load module: Error: Cannot find module \'nonexisting\'');
+            expect(block.text).to.contain('unable to load module: Error: Cannot find module \'nonexisting\'');
             expect(block.__index).to.equal(0);
 
             //get block for non npm module and check it
