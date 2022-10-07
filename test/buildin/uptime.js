@@ -6,6 +6,10 @@ import os from 'os';
 import * as common from './../blockCommon.js';
 import Uptime from './../../src/buildin/uptime.js';
 
+afterEach(() => {
+  sinon.restore();
+});
+
 describe('Buildin Uptime', function() {
     describe('#constructor basic', common.constructor(Uptime));
 

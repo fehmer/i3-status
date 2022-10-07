@@ -6,6 +6,10 @@ import * as common from './../blockCommon.js';
 import os from 'os';
 import Username from './../../src/buildin/username.js';
 
+afterEach(() => {
+  sinon.restore();
+});
+
 describe('Buildin Username', function() {
 
     describe('#constructor basic', common.constructor(Username));

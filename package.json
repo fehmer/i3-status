@@ -1,13 +1,13 @@
 {
   "name": "i3-status",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A highly customizable i3wm status bar",
   "type": "module",
   "main": "src/index.js",
   "bin": "./src/index.js",
   "scripts": {
     "test": "mocha test --recursive",
-    "watch": "mocha test --recursive  --reporter min --watch",
+    "watch": "mocha test --recursive --reporter min --watch --parallel",
     "coverage": "c8 npm run test"
   },
   "repository": {

@@ -6,6 +6,10 @@ import os from 'os';
 import * as common from './../blockCommon.js';
 import LoadAvg from './../../src/buildin/loadavg.js';
 
+afterEach(() => {
+  sinon.restore();
+});
+
 describe('Buildin LoadAvg', function() {
     describe('#constructor basic', common.constructor(LoadAvg));
 
