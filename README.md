@@ -3,27 +3,24 @@
 Highly customizable and extendable bar for the [i3 window manager](http://i3wm.org/). 
 
 [![npm version](https://img.shields.io/npm/v/i3-status.svg?style=flat-square)](https://www.npmjs.com/package/i3-status)
-[![Dependency Status](https://img.shields.io/gemnasium/fehmer/i3-status.svg?style=flat-square)](https://gemnasium.com/github.com/fehmer/i3-status)
-[![Build Status](https://img.shields.io/travis/fehmer/i3-status.svg?style=flat-square)](https://travis-ci.org/fehmer/i3-status)
-[![Codacy Badge](https://img.shields.io/codacy/grade/0c09c73671e349cfb73264d8f204820f.svg?style=flat-square)](https://www.codacy.com/app/fehmer/i3-status?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fehmer/i3-status&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://img.shields.io/codacy/coverage/0c09c73671e349cfb73264d8f204820f.svg?style=flat-square)](https://www.codacy.com/app/fehmer/i3-status?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fehmer/i3-status&amp;utm_campaign=Badge_Coverage)
+[![Node.js CI](https://github.com/fehmer/i3-status/actions/workflows/node.js.yml/badge.svg)](https://github.com/fehmer/i3-status/actions/workflows/node.js.yml)
 
 
 ## Table of content
 <!-- MarkdownTOC -->
 
-- [About](#about)
-  - [i3-status](#i3-status)
-- [Quickstart](#quickstart)
-  - [Installation](#installation)
-  - [Configuration](#configuration)
-  - [A note on security](#a-note-on-security)
-    - [Enabling encryption in i3-status](#enabling-encryption-in-i3-status)
-    - [Encrypting values](#encrypting-values)
-  - [Add to i3wm](#add-to-i3wm)
-  - [Labels](#labels)
-  - [Reporters](#reporters)
-- [Bugs, Contributing](#bugs-contributing)
+- About
+  - i3-status
+- Quickstart
+  - Installation
+  - Configuration
+  - A note on security
+    - Enabling encryption in i3-status
+    - Encrypting values
+  - Add to i3wm
+  - Labels
+  - Reporters
+- Bugs, Contributing
 
 <!-- /MarkdownTOC -->
 
