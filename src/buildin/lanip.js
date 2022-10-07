@@ -22,35 +22,24 @@ export default class LanIP extends EventEmitter {
      * update the block's output with the IP of the specified interface
      */
     update() {
-        const output = this.buildText();
+        var text = this.extractIp(networkInterfaces());
+        this.output.full_text = text;
+        this.output.short_text = text;
 
-        output.full_text = output.text;
-        output.short_text = output.text;
-
-        this.output = output;
-        this.emit('updated', this, output);
-
-        return output;
+        this.emit('updated', this, this.output);
     }
 
-    buildText() {
-        const output = {};
-
-        const interfaces = networkInterfaces();
+    extractIp(interfaces) {
         const networks = interfaces[this.interface];
 
         if ( ! networks ) {
-            output.text = `interface not found: '${this.interface}'`;
-            return;
+            return `interface not found: '${this.interface}'`;
         }
 
         if ( networks.length < 1 ) {
-            output.text = `No IP`;
-            return;
+            return `No IP`;
         }
 
-        output.text = networks[0].address;
-
-        return output;
+        return networks[0].address;
     }
 }

@@ -1,7 +1,7 @@
 # Buildin block types
 
 ## Table of content
-<!-- MarkdownTOC -->
+<!-- MarkdownTOC autolink="true" -->
 
 - [Date](#date)
   - [Format](#format)
@@ -13,24 +13,27 @@
 - [Hostname](#hostname)
   - [FQN](#fqn)
   - [Example](#example-2)
+- [LAN IP](#lan-ip)
+  - [Interface](#interface)
+  - [Example](#example-3)
 - [Load Average](#load-average)
   - [Display](#display)
   - [Warning](#warning-1)
-  - [Example](#example-3)
+  - [Example](#example-4)
 - [Memory](#memory)
   - [Display](#display-1)
   - [Warning](#warning-2)
-  - [Example](#example-4)
-- [Text](#text)
   - [Example](#example-5)
+- [Text](#text)
+  - [Example](#example-6)
 - [Uptime](#uptime)
   - [Format](#format-1)
   - [Trim](#trim)
-  - [Example](#example-6)
-- [Username](#username)
   - [Example](#example-7)
-- [Command](#command)
+- [Username](#username)
   - [Example](#example-8)
+- [Command](#command)
+  - [Example](#example-9)
 
 <!-- /MarkdownTOC -->
 
