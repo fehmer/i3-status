@@ -10,10 +10,10 @@ afterEach(() => {
   sinon.restore();
 });
 
-describe('Buildin LoadAvg', function() {
+describe('Buildin LoadAvg', ()=> {
     describe('#constructor basic', common.constructor(LoadAvg));
 
-    describe('#constructor', function() {
+    describe('#constructor', ()=> {
         it('should construct and store custom options', ()=> {
 
             //mock cpu count
@@ -41,8 +41,8 @@ describe('Buildin LoadAvg', function() {
 
     describe('update basic', common.update(LoadAvg));
 
-    describe('update', function() {
-        it('should update the output and fire updated', ()=> {
+    describe('update', ()=> {
+        it('should update the output and fire updated', async()=> {
 
             //mock cpu count
             sinon.stub(os, 'cpus').returns(new Array(4));
@@ -53,15 +53,14 @@ describe('Buildin LoadAvg', function() {
             //construct block
             var block = new LoadAvg();
 
-            common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('4.41');
-                expect(output.full_text).to.equal('4.41');
-                expect(output.urgent).to.be.false;
-            });
+            const output = await common.execute(block);
+            //check output line
+            expect(output.short_text).to.equal('4.41');
+            expect(output.full_text).to.equal('4.41');
+            expect(output.urgent).to.be.false;
         });
 
-        it('should update the output as percentage and fire updated', ()=> {
+        it('should update the output as percentage and fire updated', async()=> {
 
             //mock cpu count
             sinon.stub(os, 'cpus').returns(new Array(4));
@@ -74,15 +73,14 @@ describe('Buildin LoadAvg', function() {
                 display: 'percentage'
             });
 
-            common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('25%');
-                expect(output.full_text).to.equal('25%');
-                expect(output.urgent).to.be.false;
-            });
+            const output = await common.execute(block);
+            //check output line
+            expect(output.short_text).to.equal('25%');
+            expect(output.full_text).to.equal('25%');
+            expect(output.urgent).to.be.false;
         });
 
-        it('should update the urgent output and fire updated', ()=> {
+        it('should update the urgent output and fire updated', async()=> {
 
             //mock cpu count
             sinon.stub(os, 'cpus').returns(new Array(4));
@@ -95,12 +93,11 @@ describe('Buildin LoadAvg', function() {
                 warning: true
             });
 
-            common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('4.01');
-                expect(output.full_text).to.equal('4.01');
-                expect(output.urgent).to.be.true;
-            });
+            const output = await common.execute(block);
+            //check output line
+            expect(output.short_text).to.equal('4.01');
+            expect(output.full_text).to.equal('4.01');
+            expect(output.urgent).to.be.true;
         });
 
     });

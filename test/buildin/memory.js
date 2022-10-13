@@ -10,10 +10,10 @@ afterEach(() => {
   sinon.restore();
 });
 
-describe('Buildin Memory', function() {
+describe('Buildin Memory', ()=> {
     describe('#constructor basic', common.constructor(Memory));
 
-    describe('#constructor', function() {
+    describe('#constructor', ()=> {
         it('should construct and store custom options', () => {
             var block = new Memory({
                 display: 'amount',
@@ -32,7 +32,7 @@ describe('Buildin Memory', function() {
         });
 
         it('should refuse to construct with unknown display', () => {
-            expect(function() {
+            expect(()=> {
                 var block = new Memory({
                     display: 'unknown'
                 });
@@ -43,8 +43,8 @@ describe('Buildin Memory', function() {
 
     describe('update basic', common.update(Memory));
 
-    describe('update', function() {
-        it('should update the output amount and fire updated', ()=> {
+    describe('update', ()=> {
+        it('should update the output amount and fire updated', async()=> {
             //mock os.freemem() and os.totalmem
             sinon.stub(os, 'freemem').returns(15.5 * 1024 * 1024 * 1024);
             sinon.stub(os, 'totalmem').returns(16 * 1024 * 1024 * 1024);
@@ -53,30 +53,28 @@ describe('Buildin Memory', function() {
                 display: 'amount'
             });
 
-            common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('512MB/16GB');
-                expect(output.full_text).to.equal('512MB/16GB');
-                expect(output.urgent).to.be.false;
-            });
+            const output = await common.execute(block);
+            //check output line
+            expect(output.short_text).to.equal('512MB/16GB');
+            expect(output.full_text).to.equal('512MB/16GB');
+            expect(output.urgent).to.be.false;
         });
 
-        it('should update the output percent and fire updated', ()=> {
+        it('should update the output percent and fire updated', async()=> {
             //mock os.freemem() and os.totalmem
             sinon.stub(os, 'freemem').returns(4 * 1024 * 1024 * 1024);
             sinon.stub(os, 'totalmem').returns(16 * 1024 * 1024 * 1024);
             //construct block
             var block = new Memory();
 
-            common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('75%');
-                expect(output.full_text).to.equal('75%');
-                expect(output.urgent).to.be.false;
-            });
+            const output = await common.execute(block);
+            //check output line
+            expect(output.short_text).to.equal('75%');
+            expect(output.full_text).to.equal('75%');
+            expect(output.urgent).to.be.false;
         });
 
-        it('should update the output percent_free and fire updated', ()=> {
+        it('should update the output percent_free and fire updated', async()=> {
             //mock os.freemem() and os.totalmem
             sinon.stub(os, 'freemem').returns(4 * 1024 * 1024 * 1024);
             sinon.stub(os, 'totalmem').returns(16 * 1024 * 1024 * 1024);
@@ -85,16 +83,15 @@ describe('Buildin Memory', function() {
                 display: 'percent_free'
             });
 
-            common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('25%');
-                expect(output.full_text).to.equal('25%');
-                expect(output.urgent).to.be.false;
-            });
+            const output = await common.execute(block);
+            //check output line
+            expect(output.short_text).to.equal('25%');
+            expect(output.full_text).to.equal('25%');
+            expect(output.urgent).to.be.false;
         });
 
 
-        it('should update the output percent_free with urgent and fire updated',  ()=> {
+        it('should update the output percent_free with urgent and fire updated',  async()=> {
             //mock os.freemem() and os.totalmem
             sinon.stub(os, 'freemem').returns(.5 * 1024 * 1024 * 1024);
             sinon.stub(os, 'totalmem').returns(16 * 1024 * 1024 * 1024);
@@ -103,13 +100,11 @@ describe('Buildin Memory', function() {
                 display: 'percent_free'
             });
 
-            common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('3%');
-                expect(output.full_text).to.equal('3%');
-                expect(output.urgent).to.be.true;
-
-            });
+            const output = await common.execute(block);
+            //check output line
+            expect(output.short_text).to.equal('3%');
+            expect(output.full_text).to.equal('3%');
+            expect(output.urgent).to.be.true;
         });
     });
 

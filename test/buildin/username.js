@@ -10,13 +10,13 @@ afterEach(() => {
   sinon.restore();
 });
 
-describe('Buildin Username', function() {
+describe('Buildin Username', ()=> {
 
     describe('#constructor basic', common.constructor(Username));
 
     describe('update basic', common.update(Username));
 
-    describe('update', function() {
+    describe('update', ()=> {
         it('should update the output and fire updated', async() => {
 
             //mock os.userInfo()
@@ -27,12 +27,10 @@ describe('Buildin Username', function() {
             //construct block
             var block = new Username();
 
-            await common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('peter');
-                expect(output.full_text).to.equal('peter');
-            });
-
+            const output = await common.execute(block);
+            //check output line
+            expect(output.short_text).to.equal('peter');
+            expect(output.full_text).to.equal('peter');
         });
     });
 })
