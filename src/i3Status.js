@@ -48,8 +48,7 @@ export default class i3Status {
         //crypto
         this.crypto = new Crypto(options.secret);
 
-        //init repoter
-        this.reporter = this.initReporter(config.reporter);
+        this.reporter = new NoReporter();
     }
 
     /**
@@ -58,6 +57,9 @@ export default class i3Status {
     async run() {
         //print header for i3
         this.output.write('{"version":1,"click_events":true}\n[[]\n');
+
+        //init repoter
+        this.reporter = await this.initReporter(this.config.reporter);
 
         //load and update all blocks
         await this.initializeBlocks();
@@ -269,10 +271,17 @@ export default class i3Status {
         });
     }
 
-    initReporter(config){
+    async initReporter(config){
         if(!config || !config.module) return new NoReporter();
-        var Reporter = require(config.module).default;
-        return new Reporter(config);
+
+        const module = await import(config.module);
+        var moduleConstructor = module.default;
+
+        //legacy modules
+        if(module.default.default){
+            moduleConstructor=module.default.default;
+        }
+        return new moduleConstructor(config);
     }
 
 }

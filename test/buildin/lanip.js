@@ -10,11 +10,11 @@ afterEach(() => {
   sinon.restore();
 });
 
-describe('Buildin Lanip', function() {
+describe('Buildin Lanip', ()=> {
 
     describe('#constructor basic', common.constructor(Lanip));
 
-    describe('#constructor', function() {
+    describe('#constructor', ()=> {
         it('should construct and store custom options', () => {
             var block = new Lanip({
                 interface: 'lo'
@@ -25,8 +25,8 @@ describe('Buildin Lanip', function() {
 
     describe('update basic', common.update(Lanip));
 
-    describe('update', function() {
-        it('should update the output and fire updated', ()=> {
+    describe('update', ()=> {
+        it('should update the output and fire updated', async()=> {
 
             //mock os.lanip()
             sinon.stub(os, 'networkInterfaces').returns({
@@ -45,15 +45,14 @@ describe('Buildin Lanip', function() {
                 interface: 'lo'
             });
 
-            common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('127.0.0.1');
-                expect(output.full_text).to.equal('127.0.0.1');
-            });
+            const output = await common.execute(block);
+            //check output line
+            expect(output.short_text).to.equal('127.0.0.1');
+            expect(output.full_text).to.equal('127.0.0.1');
         });
     });
 
-    describe('getIp', function() {
+    describe('getIp', ()=> {
 
          it('should extract for known interface', () => {
             var block = new Lanip({interface: 'lo' });

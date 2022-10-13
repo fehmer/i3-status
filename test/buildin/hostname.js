@@ -10,11 +10,11 @@ afterEach(() => {
   sinon.restore();
 });
 
-describe('Buildin Hostname', function() {
+describe('Buildin Hostname', ()=> {
 
     describe('#constructor basic', common.constructor(Hostname));
 
-    describe('#constructor', function() {
+    describe('#constructor', ()=> {
         it('should construct and store custom options', () => {
             var block = new Hostname({
                 fqn: true
@@ -25,8 +25,8 @@ describe('Buildin Hostname', function() {
 
     describe('update basic', common.update(Hostname));
 
-    describe('update', function() {
-        it('should update the output and fire updated', ()=> {
+    describe('update', ()=> {
+        it('should update the output and fire updated', async()=> {
 
             //mock os.hostname()
             sinon.stub(os, 'hostname').returns('agecanonix.local');
@@ -36,15 +36,14 @@ describe('Buildin Hostname', function() {
                 fqn: true
             });
 
-            common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('agecanonix.local');
-                expect(output.full_text).to.equal('agecanonix.local');
-            });
+            const output = await common.execute(block);
+            //check output line
+            expect(output.short_text).to.equal('agecanonix.local');
+            expect(output.full_text).to.equal('agecanonix.local');
         });
     });
 
-    describe('transform', function() {
+    describe('transform', ()=> {
         it('should extract hostname from simple hostname', () => {
             var block = new Hostname();
             var text = block.transform('agecanonix');

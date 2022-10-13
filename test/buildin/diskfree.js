@@ -11,10 +11,10 @@ afterEach(() => {
   sinon.restore();
 });
 
-describe('Buildin Diskfree', function() {
+describe('Buildin Diskfree', ()=> {
     describe('#constructor basic', common.constructor(Diskfree));
 
-    describe('#constructor', function() {
+    describe('#constructor', ()=> {
         it('should construct and store custom options', () => {
             var block = new Diskfree({
                 mount: '/mnt/disk2',
@@ -39,8 +39,8 @@ describe('Buildin Diskfree', function() {
 
     describe('update basic', common.update(Diskfree));
 
-    describe('update', function() {
-        it('should update the output and fire updated', ()=> {
+    describe('update', ()=> {
+        it('should update the output and fire updated', async()=> {
 
             //mock diskusage
             sinon.stub(diskusage, 'check').yields(null, {
@@ -53,14 +53,13 @@ describe('Buildin Diskfree', function() {
                 mount: '/mnt/test'
             });
 
-            common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('500MB');
-                expect(output.full_text).to.equal('500MB');
-            });
+            const output = await common.execute(block);
+            //check output line
+            expect(output.short_text).to.equal('500MB');
+            expect(output.full_text).to.equal('500MB');
         });
 
-        it('should update with low disk space defined by percentage', ()=> {
+        it('should update with low disk space defined by percentage', async()=> {
 
             //mock diskusage
             sinon.stub(diskusage, 'check').yields(null, {
@@ -74,16 +73,14 @@ describe('Buildin Diskfree', function() {
                 warning: '10%'
             });
 
-            common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('40MB');
-                expect(output.full_text).to.equal('40MB');
-                expect(output.urgent).to.be.true;
-
-            });
+            const output = await common.execute(block);
+            //check output line
+            expect(output.short_text).to.equal('40MB');
+            expect(output.full_text).to.equal('40MB');
+            expect(output.urgent).to.be.true;
         });
 
-         it('should update with low disk space defined by total amount as number',()=> {
+         it('should update with low disk space defined by total amount as number',async()=> {
 
             //mock diskusage
             sinon.stub(diskusage, 'check').yields(null, {
@@ -96,16 +93,14 @@ describe('Buildin Diskfree', function() {
                 warning: mb(50)
             });
 
-            common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('40MB');
-                expect(output.full_text).to.equal('40MB');
-                expect(output.urgent).to.be.true;
-
-            });
+            const output = await common.execute(block);
+            //check output line
+            expect(output.short_text).to.equal('40MB');
+            expect(output.full_text).to.equal('40MB');
+            expect(output.urgent).to.be.true;
         });
 
-        it('should update with low disk space defined by total amount as 50mb', ()=> {
+        it('should update with low disk space defined by total amount as 50mb', async()=> {
 
             //mock diskusage
             sinon.stub(diskusage, 'check').yields(null, {
@@ -118,13 +113,11 @@ describe('Buildin Diskfree', function() {
                 warning: '50mb'
             });
 
-            common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('40MB');
-                expect(output.full_text).to.equal('40MB');
-                expect(output.urgent).to.be.true;
-
-            });
+            const output = await common.execute(block);
+            //check output line
+            expect(output.short_text).to.equal('40MB');
+            expect(output.full_text).to.equal('40MB');
+            expect(output.urgent).to.be.true;
         });
     });
 });

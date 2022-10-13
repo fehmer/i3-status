@@ -10,28 +10,27 @@ afterEach(() => {
   sinon.restore();
 });
 
-describe('Buildin Uptime', function() {
+describe('Buildin Uptime', ()=> {
     describe('#constructor basic', common.constructor(Uptime));
 
     describe('update basic', common.update(Uptime));
 
-    describe('update', function() {
-        it('should update the output and fire updated', ()=> {
+    describe('update', ()=> {
+        it('should update the output and fire updated', async()=> {
 
             //mock os.uptime
             sinon.stub(os, 'uptime').returns(m(45));
             //construct block
             var block = new Uptime();
 
-            common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('45');
-                expect(output.full_text).to.equal('45');
-            });
+            const output = await common.execute(block);
+            //check output line
+            expect(output.short_text).to.equal('45');
+            expect(output.full_text).to.equal('45');
         });
     });
 
-    describe('buildText', function() {
+    describe('buildText', ()=> {
         it('should format 3h 34m', () => {
             var text = new Uptime().buildText(h(3) + m(34));
             expect(text).to.equal('03:34');

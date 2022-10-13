@@ -1,16 +1,19 @@
 'use strict';
 
-import { expect } from 'chai';
+import chai from 'chai';
+const expect = chai.expect
 import * as common from './../blockCommon.js';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import Command from './../../src/buildin/command.js';
+import spies from 'chai-spies';
+chai.use(spies);
 
-describe('Buildin Command', function() {
+describe('Buildin Command', ()=> {
     describe('#constructor basic', common.constructor(Command));
 
-    describe('#constructor', function() {
+    describe('#constructor', ()=> {
         it('should construct and store custom options', () => {
             var block = new Command({});
 
@@ -20,51 +23,40 @@ describe('Buildin Command', function() {
 
     describe('update basic', common.update(Command));
 
-    describe('update', function() {
-        it('should update the output and fire updated', (done) => {
+    describe('update', ()=> {
+        it('should update the output and fire updated', async() => {
             //construct block
             var block = new Command({
                 command: path.join(path.dirname(fs.realpathSync(fileURLToPath(import.meta.url))), '../scripts/test.sh')
             });
 
-            common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('test_short');
-                expect(output.full_text).to.equal('test_full');
-                expect(output.color).to.equal('#FF00FF');
-                expect(output.urgent).to.be.false;
+            const spy = chai.spy.on(block, 'emit');
+            const output = await common.execute(block);
 
-                //command should stop interval and start a new one
-                expect(block.interval.testid).to.be.undefined;
+            //check output line
+            expect(output.short_text).to.equal('test_short');
+            expect(output.full_text).to.equal('test_full');
+            expect(output.color).to.equal('#FF00FF');
+            expect(output.urgent).to.be.false;
 
-                done();
-            }, (block) => {
-                block.interval.testmarker = true;
-                block._interval = 30000;
-            });
+            //command should stop interval and start a new one
+            expect(spy).to.be.called.with('pause');
+            expect(spy).to.be.called.with('resume');
         });
 
-        it('should update the output urgent and fire updated', (done) => {
+        it('should update the output urgent and fire updated', async() => {
             //construct block
             var block = new Command({
                 command: path.join(path.dirname(fs.realpathSync(fileURLToPath(import.meta.url))), '../scripts/urgent.sh')
             });
 
-            common.execute(block, (output) => {
-                //check output line
-                expect(output.short_text).to.equal('short_test');
-                expect(output.full_text).to.equal('full_test');
-                expect(output.color).to.equal('#FF0000');
-                expect(output.urgent).to.be.true;
+            const output = await common.execute(block);
 
-                //command should stop interval and start a new one
-                expect(block.interval.testid).to.be.undefined;
-
-                done();
-            }, (block) => {
-                block.interval.testmarker = true;
-                block._interval = 30000;
-            });
+            //check output line
+            expect(output.short_text).to.equal('short_test');
+            expect(output.full_text).to.equal('full_test');
+            expect(output.color).to.equal('#FF0000');
+            expect(output.urgent).to.be.true;
         });
     });
 
