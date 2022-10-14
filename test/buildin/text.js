@@ -20,7 +20,7 @@ describe('Buildin Text', ()=> {
     describe('update basic', common.update(Text));
 
     describe('update', async()=> {
-        it('should update the output and fire updated', async() => {
+        it('should update the output', async() => {
             //construct block
             var block = new Text({
                 text: 'Peter'

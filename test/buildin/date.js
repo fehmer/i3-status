@@ -30,7 +30,7 @@ describe('Buildin Date', ()=> {
     describe('update basic', common.update(DateClass));
 
     describe('update', ()=> {
-        it('should update the output and fire updated', async()=>  {
+        it('should update the output', async()=>  {
             sinon.stub(moment, 'now').returns(fakeTime);
             //construct block
             var block = new DateClass({

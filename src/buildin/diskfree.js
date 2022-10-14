@@ -1,24 +1,20 @@
 'use strict';
 
 /** @module buildin/diskfree */
-
-import { EventEmitter } from 'events';
 import diskusage from 'diskusage';
 import os from 'os';
 import bytes from 'bytes';
 
 /**
  * Buildin DiskFree shows free disk space for a given mount point.
- * @extends EventEmitter
  */
 
-export default class DiskFree extends EventEmitter {
+export default class DiskFree {
     /**
      * @param {Object} options - block configuration from config file
      * @param {Object} output - block output for i3bar
      */
     constructor(options, output) {
-        super();
         options = options || {};
         this.output = output || {};
 
@@ -30,27 +26,15 @@ export default class DiskFree extends EventEmitter {
 
     /**
      * update the blocks output with the available bytes free.
-     * Remember to emit updated event when done.
      */
-    update() {
+    async refresh() {
         //update output
-        diskusage.check(this.mount, (err, info) => {
-            let text;
-            if (err) {
-                text = 'Error: ' + err;
-            } else {
-                text = bytes(info.available, {
-                    decimalPlaces: 0
-                });
-            }
-
-            this.output.full_text = text;
-            this.output.short_text = text;
-            this.output.urgent = this.isUrgent(info);
-
-            //emit updated event to i3Status
-            this.emit('updated', this, this.output);
-        });
+        const info = await diskusage.check(this.mount);
+        const text = bytes(info.available, { decimalPlaces: 0 });
+            
+        this.output.full_text = text;
+        this.output.short_text = text;
+        this.output.urgent = this.isUrgent(info);
     }
 
     /**

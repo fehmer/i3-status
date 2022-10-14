@@ -7,20 +7,20 @@ Highly customizable and extendable bar for the [i3 window manager](http://i3wm.o
 
 
 ## Table of content
-<!-- MarkdownTOC -->
+<!-- MarkdownTOC autolink="true" -->
 
-- About
-  - i3-status
-- Quickstart
-  - Installation
-  - Configuration
-  - A note on security
-    - Enabling encryption in i3-status
-    - Encrypting values
-  - Add to i3wm
-  - Labels
-  - Reporters
-- Bugs, Contributing
+- [About](#about)
+  - [i3-status](#i3-status)
+- [Quickstart](#quickstart)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+  - [A note on security](#a-note-on-security)
+    - [Enabling encryption in i3-status](#enabling-encryption-in-i3-status)
+    - [Encrypting values](#encrypting-values)
+  - [Add to i3wm](#add-to-i3wm)
+  - [Labels](#labels)
+  - [Reporters](#reporters)
+- [Bugs, Contributing](#bugs-contributing)
 
 <!-- /MarkdownTOC -->
 

@@ -28,7 +28,7 @@ export function constructor(blockClass) {
 
 export function update(blockClass) {
     return () => {
-        it('should update the output and fire updated', async()=> {
+        it('should update the output', async()=> {
             //construct block
             var block = new blockClass({
             }, {
@@ -47,11 +47,18 @@ export function update(blockClass) {
 }
 
 export async function execute(block) {
-    return await new Promise(resolve => {
-        block.on('updated', async(target, output) => {
-            clearInterval(target.interval);
-            resolve(output);
+    if(block.refresh === undefined){
+        return await new Promise(async resolve => {
+       
+            block.on('updated', async(target, output) => {
+                clearInterval(target.interval);
+                resolve(output);
+            });
+            block.update();
         });
-        block.update();
-    });
+    } else {
+        await block.refresh();
+        return block.output;
+    }
+    
 }

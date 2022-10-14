@@ -26,7 +26,7 @@ describe('Buildin Hostname', ()=> {
     describe('update basic', common.update(Hostname));
 
     describe('update', ()=> {
-        it('should update the output and fire updated', async()=> {
+        it('should update the output', async()=> {
 
             //mock os.hostname()
             sinon.stub(os, 'hostname').returns('agecanonix.local');

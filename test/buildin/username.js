@@ -17,7 +17,7 @@ describe('Buildin Username', ()=> {
     describe('update basic', common.update(Username));
 
     describe('update', ()=> {
-        it('should update the output and fire updated', async() => {
+        it('should update the output', async() => {
 
             //mock os.userInfo()
             sinon.stub(os, 'userInfo').returns({

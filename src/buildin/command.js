@@ -1,23 +1,21 @@
 'use strict';
 
 /** @module buildin/command */
-
-import { EventEmitter } from 'events';
-import { exec } from 'child_process';
+import util from 'util';
+import child_process from 'child_process';
+const exec = util.promisify(child_process.exec);
 import logger from 'winston';
 
 /**
  * Buildin command runs commands as a child process.
- * @extends EventEmitter
  */
 
-export default class Command extends EventEmitter {
+export default class Command {
     /**
      * @param {Object} options - block configuration from config file
      * @param {Object} output - block output for i3bar
      */
     constructor(options, output) {
-        super();
         options = options || {};
         this.output = output || {};
 
@@ -30,10 +28,9 @@ export default class Command extends EventEmitter {
 
     /**
      * update the blocks output.
-     * Remember to emit updated event when done.
      */
-    update() {
-        this.execute(this.command);
+    async refresh() {
+        await this.execute(this.command);
     }
 
     /**
@@ -41,10 +38,7 @@ export default class Command extends EventEmitter {
      * and set urgent if exit code != 0.
      * @private
      */
-    execute(command) {
-
-        //stop old interval
-        this.emit('pause', this);
+    async execute(command) {
 
         //prepare command
         var cmdline = this.command.split(' ');
@@ -52,32 +46,36 @@ export default class Command extends EventEmitter {
 
         //execute command
         logger.debug('execute command %s for block %s', cmd, this.__name);
-        exec(cmd, cmdline, (error, stdout, stderr) => {
 
+        var result;
+        try{
+            result = await exec(cmd, cmdline);
+            this.output.urgent = false;
+        } catch (error){
             //set urgent flag based on exitcode
-            this.output.urgent = (error) ? true : false;
+            result = error;
+            this.output.urgent = true;
+        }
 
-            //split by newline, filter out empty lines
-            var result = stdout.split(['\n']).filter((element) => {
-                return element.length != 0;
-            });
+        const {stdout, stderr} = result;
 
-            //update output
-            this.output.full_text = result.length > 0 ? result[0] : '';
-            this.output.short_text = result.length > 1 ? result[1] : '';
-
-            //set color only if set in result
-            if (result.length > 2)
-                this.output.color = result[2];
-
-            //set new interval
-            this.emit('resume', this);
-
-            //emit updated event to i3Status
-            this.emit('updated', this, this.output);
-
+        //split by newline, filter out empty lines
+        var result = stdout.split(['\n']).filter((element) => {
+            return element.length != 0;
         });
 
+        //update output
+        this.output.full_text = result.length > 0 ? result[0] : '';
+        this.output.short_text = result.length > 1 ? result[1] : '';
+
+        //set color only if set in result
+        if (result.length > 2)
+            this.output.color = result[2];
+    }
+
+    pauseDuringRefresh() {
+        //pause interval during execution to prevent command to be called while already running
+        return true;
     }
 
 }

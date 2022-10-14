@@ -42,7 +42,7 @@ describe('Buildin LoadAvg', ()=> {
     describe('update basic', common.update(LoadAvg));
 
     describe('update', ()=> {
-        it('should update the output and fire updated', async()=> {
+        it('should update the output', async()=> {
 
             //mock cpu count
             sinon.stub(os, 'cpus').returns(new Array(4));
@@ -60,7 +60,7 @@ describe('Buildin LoadAvg', ()=> {
             expect(output.urgent).to.be.false;
         });
 
-        it('should update the output as percentage and fire updated', async()=> {
+        it('should update the output as percentage', async()=> {
 
             //mock cpu count
             sinon.stub(os, 'cpus').returns(new Array(4));
@@ -80,7 +80,7 @@ describe('Buildin LoadAvg', ()=> {
             expect(output.urgent).to.be.false;
         });
 
-        it('should update the urgent output and fire updated', async()=> {
+        it('should update the urgent output', async()=> {
 
             //mock cpu count
             sinon.stub(os, 'cpus').returns(new Array(4));

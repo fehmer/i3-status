@@ -7,7 +7,7 @@ Example output of the [i3-status-travis](https://github.com/fehmer/i3-status-tra
 ![Reporter in action](reporter.png)
 
 ## Table of content
-<!-- MarkdownTOC -->
+<!-- MarkdownTOC autolink="true" -->
 
 - [Available reporters](#available-reporters)
 - [Configuration](#configuration)

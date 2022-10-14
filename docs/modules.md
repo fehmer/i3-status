@@ -2,7 +2,7 @@
 
 
 ## Table of content
-<!-- MarkdownTOC -->
+<!-- MarkdownTOC autolink="true" -->
 
 - [Using third party modules](#using-third-party-modules)
   - [Example](#example)
@@ -42,7 +42,8 @@ Restart i3 or reload the config. The default key combination is *WIN+Shift+r* or
 ### known modules
 
 - [i3-status-gitlab](https://www.npmjs.com/package/i3-status-gitlab). Show build status of projects using gitlab ci.
-- [i3-status-starter](https://www.npmjs.com/package/i3-status-starter). This example module just prints a static text.
+- [i3-status-travis](https://www.npmjs.com/package/i3-status-travis). Show build status of projects using travis ci.
+- [i3-status-starter](https://www.npmjs.com/package/i3-status-starter). This example module just prints a static text.  
 - [Search npm](https://www.npmjs.com/search?q=i3-status-module) for available modules
 
 
@@ -51,8 +52,7 @@ Restart i3 or reload the config. The default key combination is *WIN+Shift+r* or
 Custom modules can be added to the configuration as a local or a published module. During development including your code as a local module is most practical. When you are pleased with the functionality of your module please take some time to document it and publish it as a npm module. Its quite simple and others may enjoy your module too. Use ```i3-status-module``` as a keyword to help others to find your module.
 
 
-An i3-status module is runnable nodejs code. You can develop the module in javascript, coffeescript, typescript etc but publish it as javascript code. The [i3-status-starter](https://github.com/fehmer/i3-status-starter) uses es2015 syntax and [babel](https://babeljs.io/) to generate node6 compatible javascript.
-
+An i3-status module is runnable nodejs code. You can develop the module in javascript, coffeescript, typescript etc but publish it as javascript code. 
 
 The [i3-status-starter](https://github.com/fehmer/i3-status-starter) provides example code and the documentation how to write your own module. 
 
@@ -63,7 +63,7 @@ You can use a local module by defining the ```.js``` file as the module, e.g.
 
 ```yml
  - name: local
-   module: /home/<yourname>/workspace/test/index.js
+   module: /home/<yourname>/workspace/i3-status-mymodule/src/index.js
 ```
 
 

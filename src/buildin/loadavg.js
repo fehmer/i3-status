@@ -1,24 +1,20 @@
 'use strict';
 
 /** @module buildin/loadavg */
-
-import { EventEmitter } from 'events';
 import os from 'os';
 
 /**
  * Buildin LoadAvg shows the load average for the last minute.
  * if warning is true the block will be urgent if load average
  * is greater than the number of cpus.
- * @extends EventEmitter
  */
 
-export default class LoadAvg extends EventEmitter {
+export default class LoadAvg {
     /**
      * @param {Object} options - block configuration from config file
      * @param {Object} output - block output for i3bar
      */
     constructor(options, output) {
-        super();
         options = options || {};
         this.output = output || {};
 
@@ -30,9 +26,8 @@ export default class LoadAvg extends EventEmitter {
 
     /**
      * update the blocks output with the last minute load average.
-     * Remember to emit updated event when done.
      */
-    update() {
+    async refresh() {
         //update output
         var text;
         var avg = os.loadavg()[0];
@@ -49,9 +44,6 @@ export default class LoadAvg extends EventEmitter {
 
         //block is urgent if warning is enabled and avg is greater the cpu count
         this.output.urgent = this.warning && avg > this.ncpu;
-
-        //emit updated event to i3Status
-        this.emit('updated', this, this.output);
     }
 
 }

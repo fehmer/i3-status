@@ -16,7 +16,7 @@ describe('Buildin Uptime', ()=> {
     describe('update basic', common.update(Uptime));
 
     describe('update', ()=> {
-        it('should update the output and fire updated', async()=> {
+        it('should update the output', async()=> {
 
             //mock os.uptime
             sinon.stub(os, 'uptime').returns(m(45));

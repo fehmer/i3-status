@@ -26,7 +26,7 @@ describe('Buildin Lanip', ()=> {
     describe('update basic', common.update(Lanip));
 
     describe('update', ()=> {
-        it('should update the output and fire updated', async()=> {
+        it('should update the output', async()=> {
 
             //mock os.lanip()
             sinon.stub(os, 'networkInterfaces').returns({

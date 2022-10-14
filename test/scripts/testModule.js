@@ -19,7 +19,7 @@ export default class TestModule extends EventEmitter {
 
     update() {
         //update output
-        var text = 'test_module'
+        var text = this.text;
         this.output.full_text = text;
         this.output.short_text = text;
 
