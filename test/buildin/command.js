@@ -7,8 +7,6 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import Command from './../../src/buildin/command.js';
-import spies from 'chai-spies';
-chai.use(spies);
 
 describe('Buildin Command', ()=> {
     describe('#constructor basic', common.constructor(Command));
@@ -24,13 +22,12 @@ describe('Buildin Command', ()=> {
     describe('update basic', common.update(Command));
 
     describe('update', ()=> {
-        it('should update the output and fire updated', async() => {
+        it('should update the output', async() => {
             //construct block
             var block = new Command({
                 command: path.join(path.dirname(fs.realpathSync(fileURLToPath(import.meta.url))), '../scripts/test.sh')
             });
 
-            const spy = chai.spy.on(block, 'emit');
             const output = await common.execute(block);
 
             //check output line
@@ -38,13 +35,9 @@ describe('Buildin Command', ()=> {
             expect(output.full_text).to.equal('test_full');
             expect(output.color).to.equal('#FF00FF');
             expect(output.urgent).to.be.false;
-
-            //command should stop interval and start a new one
-            expect(spy).to.be.called.with('pause');
-            expect(spy).to.be.called.with('resume');
         });
 
-        it('should update the output urgent and fire updated', async() => {
+        it('should update the output urgent', async() => {
             //construct block
             var block = new Command({
                 command: path.join(path.dirname(fs.realpathSync(fileURLToPath(import.meta.url))), '../scripts/urgent.sh')
@@ -58,6 +51,15 @@ describe('Buildin Command', ()=> {
             expect(output.color).to.equal('#FF0000');
             expect(output.urgent).to.be.true;
         });
+
+        it('should pause interval during update', ()=> {
+            var block = new Command({
+                command: path.join(path.dirname(fs.realpathSync(fileURLToPath(import.meta.url))), '../scripts/test.sh')
+            });
+
+            expect(block.pauseDuringRefresh?.apply()).to.be.true;
+
+        })
     });
 
 })

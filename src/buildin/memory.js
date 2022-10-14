@@ -1,23 +1,19 @@
 'use strict';
 
 /** @module buildin/memory */
-
-import { EventEmitter } from 'events';
 import os from 'os';
 import bytes from 'bytes';
 
 /**
  * Buildin memory displays the used/free amount of memory in percent or total amount.
- * @extends EventEmitter
  */
 
-export default class Memory extends EventEmitter {
+export default class Memory {
     /**
      * @param {Object} options - block configuration from config file
      * @param {Object} output - block output for i3bar
      */
     constructor(options, output) {
-        super();
         options = options || {};
         this.output = output || {};
         this.display = options.display || 'percent';
@@ -33,18 +29,14 @@ export default class Memory extends EventEmitter {
 
     /**
      * update the blocks output with the free/used memory based on the config.
-     * Remember to emit updated event when done.
      */
-    update() {
+    async refresh() {
         //update output
         var output = this.buildText();
 
         this.output.full_text = output.text;
         this.output.short_text = output.text;
         this.output.urgent = output.urgent;
-
-        //emit updated event to i3Status
-        this.emit('updated', this, this.output);
     }
 
     /**

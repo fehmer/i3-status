@@ -1,21 +1,18 @@
 'use strict';
 
 /** @module buildin/hostname */
-import { EventEmitter } from 'events';
 import os from 'os';
 
 /**
  * Buildin hostname shows the hostname as short name or full qualified if configured.
- * @extends EventEmitter
  */
 
-export default class Hostname extends EventEmitter {
+export default class Hostname {
     /**
      * @param {Object} options - block configuration from config file
      * @param {Object} output - block output for i3bar
      */
     constructor(options, output) {
-        super();
         options = options || {};
         this.output = output || {};
 
@@ -25,16 +22,12 @@ export default class Hostname extends EventEmitter {
 
     /**
      * update the blocks output with the current hostname.
-     * Remember to emit updated event when done.
      */
-    update() {
+    async refresh() {
         //update output
         var text = this.transform(os.hostname());
         this.output.full_text = text;
         this.output.short_text = text;
-
-        //emit updated event to i3Status
-        this.emit('updated', this, this.output);
     }
 
     /**

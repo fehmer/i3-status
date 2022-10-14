@@ -1,6 +1,9 @@
 'use strict';
 
-import { expect } from 'chai';
+import chai from 'chai';
+const { expect } = chai; 
+import chaiString from 'chai-string';
+chai.use(chaiString);
 import assert from 'assert';
 import concat from 'concat-stream';
 import logger from 'winston';
@@ -9,6 +12,8 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import I3Status from './../src/i3Status.js';
 import TextClass from './../src/buildin/text.js';
+import TestModuleClass from './scripts/testModule.js'
+import TestModuleAsyncClass from './scripts/testModuleAsync.js'
 
 
 if (process.env.DEBUG)
@@ -27,10 +32,10 @@ describe('i3Status', () => {
             expect(instance.config.main.color).to.equal('#E0E0E0');
 
             //check there are two blocks
-            expect(instance.config.blocks).to.have.lengthOf(2);
+            expect(instance.config.blocks).to.have.lengthOf(4);
 
             //check line is created, it holds the output for each block
-            expect(instance.lines).to.have.lengthOf(2);
+            expect(instance.lines).to.have.lengthOf(4);
         });
 
 
@@ -60,6 +65,10 @@ describe('i3Status', () => {
                 config: './test/.config/test.yml'
             });
 
+            const __dirname = path.dirname(fs.realpathSync(fileURLToPath(import.meta.url)));
+            instance.config.blocks[2].module = path.join(__dirname, 'scripts/testModuleAsync.js')
+            instance.config.blocks[3].module = path.join(__dirname, 'scripts/testModule.js')
+
             //call initializeBlocks
             await instance.initializeBlocks();
 
@@ -69,13 +78,10 @@ describe('i3Status', () => {
             expect(block.__name).to.equal('date');
             expect(block.text).to.equal('13:37');
             expect(block.__index).to.equal(0);
-            expect(block.update).to.be.ok;
             expect(block).to.have.property('__logger');
             //update method exists
-            expect(block.update).to.be.ok;
-
-            //listener for updated is registered
-            expect(block.listenerCount('updated')).to.equal(1);
+            expect(block.refresh).to.be.ok;
+            expect(block.__meta.type).to.equal('async');
 
             //get block for date and check it
             block = instance.blocks.seconds;
@@ -83,10 +89,28 @@ describe('i3Status', () => {
             expect(block.__name).to.equal('seconds');
             expect(block.text).to.equal('42');
             expect(block.__index).to.equal(1);
-            expect(block.update).to.be.ok;
+            expect(block.refresh).to.be.ok;
+            expect(block.__meta.type).to.equal('async');
 
-            //listener for updated is registered
-            expect(block.listenerCount('updated')).to.equal(1);
+            //get block for asyncBlock and check it
+            block = instance.blocks.asyncBlock;
+            expect(block).to.be.an.instanceof(TestModuleAsyncClass);
+            expect(block.__name).to.equal('asyncBlock');
+            expect(block.text).to.equal('async working');
+            expect(block.__index).to.equal(2);
+            expect(block.update).to.be.undefined;
+            expect(block.refresh).to.be.ok;
+            expect(block.__meta.type).to.equal('async');
+
+             //get block for asyncBlock and check it
+            block = instance.blocks.eventBlock;
+            expect(block).to.be.an.instanceof(TestModuleClass);
+            expect(block.__name).to.equal('eventBlock');
+            expect(block.text).to.equal('event working');
+            expect(block.__index).to.equal(3);
+            expect(block.refresh).to.be.undefined;
+            expect(block.update).to.be.ok;
+            expect(block.__meta.type).to.equal('event');
 
         });
 
@@ -97,7 +121,9 @@ describe('i3Status', () => {
             });
 
             //replace non-npm module with absolute path
-            instance.config.blocks[1].module = path.join(path.dirname(fs.realpathSync(fileURLToPath(import.meta.url))), 'scripts/testModule.js')
+            const __dirname = path.dirname(fs.realpathSync(fileURLToPath(import.meta.url)));
+            instance.config.blocks[1].module = path.join(__dirname, 'scripts/testModule.js')
+            instance.config.blocks[3].module = path.join(__dirname, 'scripts/testModuleAsync.js')
 
             //call initializeBlocks
             await instance.initializeBlocks();
@@ -121,6 +147,13 @@ describe('i3Status', () => {
             expect(block.__name).to.equal('module3');
             expect(block.text).to.equal('npm module working');
             expect(block.__index).to.equal(2);
+
+            //get block for non-npm module and check it
+            block = instance.blocks.module4;
+            expect(block.__name).to.equal('module4');
+            expect(block.text).to.equal('async working');
+            expect(block.__meta.type).to.equal('async');
+            expect(block.__index).to.equal(3);
 
         });
 
@@ -224,12 +257,19 @@ describe('i3Status', () => {
 
         it('should output all blocks', async() => {
 
+        const dateBlockOutput = '{"name":"date","color":"#E0E0E0","full_text":" 13:37","short_text":" 13:37"}';
+        const secondBlockOutput = '{"name":"seconds","color":"#ff00ff","full_text":" 42","short_text":" 42"}';
+        const asyncBlockOutput = '{"name":"asyncBlock","color":"#E0E0E0","full_text":"async working","short_text":"async working"}';
+        const eventBlockOutput = '{"name":"eventBlock","color":"#E0E0E0","full_text":"event working","short_text":"event working"}';
+
             //capture stdout
             var capture = concat((lines) => {
                 //header should be outputted and the first line with null values
-                expect(lines).to.equal('' +
-                    ',[{"name":"date","color":"#E0E0E0","full_text":" 13:37","short_text":" 13:37"},null]\n' +
-                    ',[{"name":"date","color":"#E0E0E0","full_text":" 13:37","short_text":" 13:37"},{"name":"seconds","color":"#ff00ff","full_text":" 42","short_text":" 42"}]\n'
+                expect(lines).to.startsWith(
+                    '{"version":1,"click_events":true}\n[[]\n'
+                );
+                expect(lines).to.endsWith(
+                    `,[${dateBlockOutput},${secondBlockOutput},${asyncBlockOutput},${eventBlockOutput}]\n`
                 );
             });
 
@@ -238,13 +278,15 @@ describe('i3Status', () => {
                 config: './test/.config/test.yml'
             }, capture);
 
-            //init blocks, start update on each one once
-            await instance.initializeBlocks();
-            instance.blocks.date.update();
-            instance.blocks.seconds.update();
+            const __dirname = path.dirname(fs.realpathSync(fileURLToPath(import.meta.url)));
+            instance.config.blocks[2].module = path.join(__dirname, 'scripts/testModuleAsync.js')
+            instance.config.blocks[3].module = path.join(__dirname, 'scripts/testModule.js')
+
+            await instance.run();
 
             //end capture
             capture.end();
+            instance.close();
 
         });
 

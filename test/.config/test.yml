@@ -19,3 +19,9 @@ blocks:
       middle:
       right: gnome-calculator
       8: 'google-chrome https://heise.de'
+  - name: asyncBlock
+    module: replace
+    text: async working
+  - name: eventBlock
+    module: replace
+    text: event working

@@ -40,10 +40,10 @@ describe('Buildin Diskfree', ()=> {
     describe('update basic', common.update(Diskfree));
 
     describe('update', ()=> {
-        it('should update the output and fire updated', async()=> {
+        it('should update the output', async()=> {
 
             //mock diskusage
-            sinon.stub(diskusage, 'check').yields(null, {
+            sinon.stub(diskusage, 'check').resolves({
                 available: mb(500),
                 total: mb(530)
             });
@@ -62,7 +62,7 @@ describe('Buildin Diskfree', ()=> {
         it('should update with low disk space defined by percentage', async()=> {
 
             //mock diskusage
-            sinon.stub(diskusage, 'check').yields(null, {
+            sinon.stub(diskusage, 'check').resolves({
                 available: mb(40),
                 total: mb(500)
             });
@@ -83,7 +83,7 @@ describe('Buildin Diskfree', ()=> {
          it('should update with low disk space defined by total amount as number',async()=> {
 
             //mock diskusage
-            sinon.stub(diskusage, 'check').yields(null, {
+            sinon.stub(diskusage, 'check').resolves({
                 available: mb(40)
             });
 
@@ -103,7 +103,7 @@ describe('Buildin Diskfree', ()=> {
         it('should update with low disk space defined by total amount as 50mb', async()=> {
 
             //mock diskusage
-            sinon.stub(diskusage, 'check').yields(null, {
+            sinon.stub(diskusage, 'check').resolves({
                 available: mb(40)
             });
 

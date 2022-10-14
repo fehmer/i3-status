@@ -64,7 +64,7 @@ export default class i3Status {
         //load and update all blocks
         await this.initializeBlocks();
 
-        this.config.blocks.forEach(config => {
+        this.config.blocks.forEach(async(config) => {
             var block = this.blocks[config.name];
             logger.debug('starting %s with interval %d ms', block.__name, config.interval);
 
@@ -72,15 +72,14 @@ export default class i3Status {
             block.__interval_time = config.interval;
 
             //start timer on block
-            block.__interval = setInterval(() => {
-                block.update()
-            }, config.interval);
+            this.resumeBlock(block);
 
             //update block for the first time;
-            block.update();
+            await this.updateBlock(block);
         });
 
     }
+
 
     /**
      * initialize all blocks, sets common properties and adds listeners for updated, pause and resume.
@@ -118,14 +117,7 @@ export default class i3Status {
             } else if (config.module) {
                 //load module
                 try {
-                    const module = await import(config.module);
-                    var moduleConstructor = module.default;
-
-                    //legacy modules
-                    if(module.default.default){
-                        moduleConstructor=module.default.default;
-                    }
-
+                    const moduleConstructor = await this.loadModule(config.module);
                     var block = new moduleConstructor(config, output);
                 } catch (e) {
                     var block = new buildin.text({
@@ -150,20 +142,26 @@ export default class i3Status {
             //add reporter
             block.__reporter = Object.assign(this.reporter,{});
 
-            //add listener for updated
-            block.on('updated', ((block, data) => {
-                this.update(block.__name, data);
-            }));
+            //set meta
+            block.__meta = {};
+            block.__meta.type = (block.refresh === undefined) ? "event" : "async";
 
-            //add listener for pause
-            block.on('pause', (block) => {
-                this.pauseBlock(block);
-            });
+            if(block.__meta.type === 'event'){
+                //add listener for updated
+                block.on('updated', ((block, data) => {
+                    this.update(block.__name, data);
+                }));
 
-            //add listener for resume
-            block.on('resume', (block) => {
-                this.resumeBlock(block);
-            });
+                //add listener for pause
+                block.on('pause', (block) => {
+                    this.pauseBlock(block);
+                });
+
+                //add listener for resume
+                block.on('resume', (block) => {
+                    this.resumeBlock(block);
+                });
+            }
 
             //add default action code if no other exists
             if (!block.action)
@@ -248,9 +246,29 @@ export default class i3Status {
      */
     resumeBlock(block) {
         logger.debug(`resume interval (${block.__interval_time}) for ${block.__name}`);
-        block.__interval = setInterval(() => {
-            block.update();
+        block.__interval = setInterval(async() => {
+            await this.updateBlock(block);
         }, block.__interval_time);
+    }
+
+    async updateBlock(block){
+        if(block.__meta.type === 'event'){
+            return await block.update();
+        } else {
+            const pauseDuringRefresh = block.pauseDuringRefresh?.apply()===true;
+
+            if(pauseDuringRefresh){
+                this.pauseBlock(block);
+            }
+
+            await block.refresh();
+            
+            if(pauseDuringRefresh){
+                this.resumeBlock(block);
+            }
+            
+            this.update(block.__name, block.output);
+        }
     }
 
     /**
@@ -271,17 +289,22 @@ export default class i3Status {
         });
     }
 
-    async initReporter(config){
+    async initReporter(config) {
         if(!config || !config.module) return new NoReporter();
-
-        const module = await import(config.module);
-        var moduleConstructor = module.default;
-
-        //legacy modules
-        if(module.default.default){
-            moduleConstructor=module.default.default;
-        }
+        const moduleConstructor = await this.loadModule(config.module);
         return new moduleConstructor(config);
+    }
+
+    async loadModule(moduleName) {
+        const moduleImport = await import(moduleName);
+        var module = moduleImport.default;
+
+        //legacy moduleImports
+        if(moduleImport.default.default){
+            module = moduleImport.default.default;
+        }
+
+        return module;
     }
 
 }

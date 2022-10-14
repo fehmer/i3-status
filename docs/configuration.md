@@ -1,7 +1,7 @@
 # Configuration
 
 ## Table of content
-<!-- MarkdownTOC -->
+<!-- MarkdownTOC autolink="true" -->
 
 - [Example](#example)
 - [Main](#main)

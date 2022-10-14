@@ -44,7 +44,7 @@ describe('Buildin Memory', ()=> {
     describe('update basic', common.update(Memory));
 
     describe('update', ()=> {
-        it('should update the output amount and fire updated', async()=> {
+        it('should update the output amount', async()=> {
             //mock os.freemem() and os.totalmem
             sinon.stub(os, 'freemem').returns(15.5 * 1024 * 1024 * 1024);
             sinon.stub(os, 'totalmem').returns(16 * 1024 * 1024 * 1024);
@@ -60,7 +60,7 @@ describe('Buildin Memory', ()=> {
             expect(output.urgent).to.be.false;
         });
 
-        it('should update the output percent and fire updated', async()=> {
+        it('should update the output percent', async()=> {
             //mock os.freemem() and os.totalmem
             sinon.stub(os, 'freemem').returns(4 * 1024 * 1024 * 1024);
             sinon.stub(os, 'totalmem').returns(16 * 1024 * 1024 * 1024);
@@ -74,7 +74,7 @@ describe('Buildin Memory', ()=> {
             expect(output.urgent).to.be.false;
         });
 
-        it('should update the output percent_free and fire updated', async()=> {
+        it('should update the output percent_free', async()=> {
             //mock os.freemem() and os.totalmem
             sinon.stub(os, 'freemem').returns(4 * 1024 * 1024 * 1024);
             sinon.stub(os, 'totalmem').returns(16 * 1024 * 1024 * 1024);
@@ -91,7 +91,7 @@ describe('Buildin Memory', ()=> {
         });
 
 
-        it('should update the output percent_free with urgent and fire updated',  async()=> {
+        it('should update the output percent_free with urgent',  async()=> {
             //mock os.freemem() and os.totalmem
             sinon.stub(os, 'freemem').returns(.5 * 1024 * 1024 * 1024);
             sinon.stub(os, 'totalmem').returns(16 * 1024 * 1024 * 1024);

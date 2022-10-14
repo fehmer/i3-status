@@ -1,37 +1,29 @@
 'use strict';
 
 /** @module buildin/username */
-
-import { EventEmitter } from 'events';
 import os from 'os';
 
 /**
  * Buildin username shows the name of the current user.
- * @extends EventEmitter
  */
 
-export default class Username extends EventEmitter {
+export default class Username {
     /**
      * @param {Object} options - block configuration from config file
      * @param {Object} output - block output for i3bar
      */
     constructor(options, output) {
-        super();
         options = options || {};
         this.output = output || {};
     }
 
     /**
      * update the blocks output with the current username.
-     * Remember to emit updated event when done.
      */
-    update() {
+    async refresh() {
         //update output
         var text = os.userInfo().username;
         this.output.full_text = text;
         this.output.short_text = text;
-
-        //emit updated event to i3Status
-        this.emit('updated', this, this.output);
     }
 }
